@@ -161,7 +161,7 @@ const CONFIG = {
         {
           icon: "🚫",
           titel: "Die große Restmülltonne ist nicht dein Job",
-          text: "Die große Restmülltonne leeren die Putzkräfte. Das gehört ausdrücklich nicht zum Mülldienst."
+          text: "Die große Restmülltonne leeren die Putzkräfte. Das gehört ausdrücklich nicht zum Mülldienst. Eigentlich sollten sie jeden Tag kommen – in der Realität sieht das aber oft anders aus."
         },
         {
           icon: "📍",
@@ -426,5 +426,14 @@ const CONFIG = {
   },
 
   /* --- Text auf der Abschluss-Seite -------------------------- */
-  abschlussText: "Du kennst jetzt die Stockwerksregeln. Willkommen auf dem Flur!"
+  abschlussText: "Du kennst jetzt die Stockwerksregeln. Willkommen auf dem Flur!",
+
+  /* --- Kasten ganz am Ende, unter dem Gruppenlink ------------
+     Weglassen oder auf null setzen, dann erscheint er nicht.
+     ---------------------------------------------------------- */
+  abschlussHinweis: {
+    icon: "💡",
+    titel: "Ideen? Immer her damit!",
+    text: "Diese Regeln sind nicht in Stein gemeißelt. Wir sind immer offen für Verbesserungen und gute Ideen – zum Semesterbeginn setzen wir uns sowieso alle zusammen. Bring deine Vorschläge einfach mit."
+  }
 };

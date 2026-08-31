@@ -38,6 +38,13 @@
   $("hero-untertitel").textContent = CONFIG.untertitel;
   $("foot-flur").textContent = CONFIG.flur;
   $("done-text").textContent = CONFIG.abschlussText;
+
+  if (CONFIG.abschlussHinweis && CONFIG.abschlussHinweis.text) {
+    $("hinweis-icon").textContent = CONFIG.abschlussHinweis.icon || "💡";
+    $("hinweis-titel").textContent = CONFIG.abschlussHinweis.titel || "";
+    $("hinweis-text").textContent = CONFIG.abschlussHinweis.text;
+    $("abschluss-hinweis").hidden = false;
+  }
   document.title = CONFIG.seitentitel + " – " + CONFIG.flur;
 
   /* ---------- Regeln rendern ---------- */

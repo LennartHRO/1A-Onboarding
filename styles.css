@@ -116,6 +116,12 @@ p:last-child { margin-bottom: 0; }
 .rule-title { font-weight: 650; margin: 0 0 3px; font-size: 17px; }
 .rule-text { margin: 0; color: var(--text-soft); font-size: 15px; }
 
+/* ---------- Hinweiskasten am Ende ---------- */
+.hinweis { display: flex; gap: 14px; align-items: flex-start; background: var(--accent-bg); border-color: transparent; }
+.hinweis-icon { font-size: 26px; line-height: 1.2; flex: 0 0 auto; }
+.hinweis-titel { font-weight: 650; margin: 0 0 4px; }
+.hinweis-text { margin: 0; font-size: 15px; }
+
 /* ---------- Musikschalter ---------- */
 .musik-btn {
   position: fixed;
