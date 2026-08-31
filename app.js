@@ -14,6 +14,12 @@
   function zeige(id) {
     screens.forEach(function (s) { $(s).hidden = (s !== id); });
     window.scrollTo(0, 0);
+    // waehrend der Fragen laeuft das treibende Stueck, sonst das ruhige
+    if (typeof Musik !== "undefined" && Musik.laeuft()) Musik.wechsle(stueckZumBildschirm());
+  }
+
+  function stueckZumBildschirm() {
+    return $("screen-quiz").hidden ? "normal" : "episch";
   }
 
   /* ---------- WhatsApp-Link auslesen (Klartext oder Base64) ---------- */
@@ -454,7 +460,7 @@
   // Browser erlauben Ton erst nach einer Nutzeraktion - daher beim ersten Klick starten
   function musikAnwerfen() {
     if (!Musik.verfuegbar() || !musikGewuenscht() || Musik.laeuft()) return;
-    Musik.start();
+    Musik.start(stueckZumBildschirm());
     musikSymbolSetzen();
   }
 
@@ -467,7 +473,7 @@
         try { localStorage.setItem(MUSIK_KEY, "1"); } catch (e) {}
       } else {
         try { localStorage.removeItem(MUSIK_KEY); } catch (e) {}
-        Musik.start();
+        Musik.start(stueckZumBildschirm());
       }
       musikSymbolSetzen();
     });

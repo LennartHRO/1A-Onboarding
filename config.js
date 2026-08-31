@@ -30,13 +30,17 @@ const CONFIG = {
      Eingebaut ist eine selbst erzeugte 8-Bit-Melodie im Gameboy-Stil,
      die per Web Audio direkt im Browser gespielt wird - also kein
      Original-Soundtrack und keine Audiodatei noetig.
-     Eigene Datei stattdessen: Dateinamen eintragen, z. B. "musik.mp3",
-     und die Datei in denselben Ordner legen.
+     Es gibt zwei Stuecke: ein ruhiges fuer Startseite und Regeln,
+     ein treibendes waehrend der Fragen - der Wechsel passiert von selbst.
+     Eigene Dateien stattdessen: Dateinamen eintragen und die Dateien in
+     denselben Ordner legen. dateiTest laeuft dann bei den Fragen; laesst
+     du es leer, spielt datei durchgehend.
      an: false schaltet die Musik komplett ab.
      ---------------------------------------------------------- */
   musik: {
     an: true,
     datei: "",
+    dateiTest: "",
     lautstaerke: 0.16
   },
 
@@ -125,12 +129,12 @@ const CONFIG = {
         {
           icon: "🚻",
           titel: "Links Mädchen, rechts Jungs",
-          text: "Die linke Toilette ist für die Mädchen, die rechte für die Jungs. Das gilt ohne Ausnahme."
+          text: "Die linke Toilette ist für die Mädchen, die rechte für die Jungs. Wer sich in dieser Einteilung nicht wiederfindet, nimmt die, die passt."
         },
         {
           icon: "🚦",
           titel: "Die goldene Regel",
-          text: "Ist eine der beiden Toiletten schon besetzt, darf die andere nicht benutzt werden – auch wenn sie frei ist. Dann heißt es warten."
+          text: "Ist eine der beiden Toiletten schon besetzt, darf die andere nicht benutzt werden – auch wenn sie frei ist. Dann heißt es warten, oder du gehst auf das Klo im Gang."
         },
         {
           icon: "🚽",
@@ -162,7 +166,7 @@ const CONFIG = {
         {
           icon: "📍",
           titel: "Wo die Tonnen stehen",
-          text: "Glas sowie Plastik & Alu stehen nordöstlich der Kreuzung. Biomüll, Papiermüll und Restmüll findest du südwestlich davon. Das Wertstoffmobil kommt donnerstags morgens an die Hiltenspergerstraße. Präg dir die Standorte gut ein – im Test musst du eine davon auf der Karte zeigen.",
+          text: "Glas sowie Plastik & Alu stehen nordöstlich der Kreuzung. Biomüll, Papiermüll und Restmüll findest du südwestlich davon. Das Wertstoffmobil kommt donnerstags morgens an die Hiltenspergerstraße.",
           bild: "karte-loesung.png",
           bildAlt: "Karte mit den Standorten der Mülltonnen rund um die Kreuzung Clemensstraße / Hiltenspergerstraße"
         }
@@ -344,13 +348,13 @@ const CONFIG = {
     {
       frage: "Auf einer der beiden Toiletten ist gerade jemand. Was machst du?",
       optionen: [
-        "Warten – ist eine besetzt, bleibt die andere tabu",
+        "Warten oder auf das Klo im Gang gehen",
         "Die andere benutzen, die ist ja frei",
         "Die andere benutzen, solange es die für mein Geschlecht ist",
         "Anklopfen und fragen, ob es noch lange dauert"
       ],
       richtig: [0],
-      erklaerung: "Die goldene Regel: Ist eine der beiden Toiletten besetzt, bleibt die andere frei – da wird gewartet. Ansonsten gilt: links die Mädchen, rechts die Jungs. Und gepinkelt wird im Sitzen."
+      erklaerung: "Die goldene Regel: Ist eine der beiden Toiletten besetzt, bleibt die andere frei. Dann wartest du – oder gehst auf das Klo im Gang. Ansonsten gilt: links die Mädchen, rechts die Jungs. Und gepinkelt wird im Sitzen."
     },
     {
       frage: "Das Küchenhandtuch ist feucht. Wohin damit?",
@@ -373,20 +377,25 @@ const CONFIG = {
      gemessen aus src/Karte_Lösung.png. Oben links = 0/0.
 
      "toleranz" ist der erlaubte Abstand, gemessen in Bildbreiten.
-     0.07 entspricht etwa 7 % der Kartenbreite – auf dem Handy rund
-     einen Daumen breit. Zur Orientierung die Abstände zwischen den
-     Tonnen (kleiner als die Toleranz = die beiden sind nicht mehr
-     unterscheidbar):
+     0.15 entspricht etwa 15 % der Kartenbreite – auf einem Handy rund
+     50 Pixel Radius, also gut mit dem Daumen zu treffen.
+
+     Zur Orientierung die Abstände zwischen den Tonnen. Alles, was
+     kleiner ist als die Toleranz, gilt als derselbe Ort:
          Glas / Plastik & Alu    0.053  (stehen ohnehin nebeneinander)
          Papiermüll / Restmüll   0.094
          Biomüll / Papiermüll    0.127
-     Mit 0.07 muss man also die richtige Tonne treffen, nicht nur die
-     richtige Straßenecke. Größerer Wert = großzügiger.
+         Biomüll / Restmüll      0.218
+         ... zur anderen Straßenecke   ab 0.670
+     Mit 0.15 muss man die richtige Straßenecke und ungefähr die
+     richtige Stelle treffen; die drei Tonnen unten links sind
+     untereinander austauschbar. Kleinerer Wert = strenger:
+     mit 0.07 muss man jede Tonne einzeln treffen.
      ---------------------------------------------------------- */
   karte: {
     bild: "karte.png",
     bildAlt: "Leere Karte der Kreuzung Clemensstraße / Hiltenspergerstraße",
-    toleranz: 0.07,
+    toleranz: 0.15,
     tonnen: [
       {
         name: "Glas",

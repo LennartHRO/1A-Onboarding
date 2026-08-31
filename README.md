@@ -13,7 +13,9 @@ machen einen kurzen Test und bekommen erst danach den Link zur WhatsApp-Gruppe.
 | `styles.css` | Aussehen (hell/dunkel automatisch) |
 | `app.js` | Ablauf-Logik |
 | `musik.js` | 8-Bit-Hintergrundmusik (wird im Browser erzeugt) |
-| `qr.html` | QR-Code + fertigen Aushang zum Ausdrucken erzeugen |
+| `qr.html` | QR-Code + Aushang neu erzeugen, falls sich die Adresse ändert |
+| `aushang.pdf` | **Fertiger A4-Aushang zum Ausdrucken** (QR-Code + Anleitung) |
+| `qr-code.png` | Der QR-Code einzeln, 1400 x 1400 px |
 | `karte.png` | Leere Karte für die Aufgabe im Test |
 | `karte-loesung.png` | Karte mit den Tonnen-Standorten, wird in den Regeln gezeigt |
 
@@ -121,12 +123,18 @@ Ebenfalls kostenlos und ohne Traffic-Limit.
 
 ## Schritt 4: QR-Code und Aushang
 
-`qr.html` doppelklicken (Internetverbindung nötig, die QR-Bibliothek wird geladen).
+Beides liegt fertig im Ordner und zeigt auf `https://lennarthro.github.io/1A-Onboarding/`:
 
-1. Die Adresse aus Schritt 3 eintragen
-2. Überschrift und Unterzeile anpassen
-3. *Aushang drucken / als PDF speichern* → fertiger Zettel für die Küchentür,
-   oder *Nur QR-Code als SVG speichern*, wenn du ihn woanders einbauen willst
+- **`aushang.pdf`** – A4, randlos gesetzt, einfach ausdrucken und an die Küchentür hängen.
+  Enthält den QR-Code, die drei Schritte und die Adresse zum Abtippen.
+- **`qr-code.png`** – nur der Code, 1400 x 1400 Pixel. Für Aushänge, die du selbst gestaltest,
+  oder zum Verschicken.
+
+Der Code wurde nach dem Erzeugen maschinell zurückgelesen und enthält exakt die Live-Adresse.
+
+**Wenn sich die Adresse mal ändert** (anderer Hoster, eigene Domain): `qr.html` doppelklicken,
+neue Adresse eintragen, dann *Aushang drucken / als PDF speichern* oder den Code als SVG sichern.
+Danach `aushang.pdf` und `qr-code.png` im Ordner ersetzen.
 
 Vor dem Aufhängen einmal selbst mit dem Handy scannen und den Ablauf durchklicken.
 
