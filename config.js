@@ -115,6 +115,32 @@ const CONFIG = {
     },
 
     {
+      titel: "Bad und Toilette",
+      regeln: [
+        {
+          icon: "🚻",
+          titel: "Links Mädchen, rechts Jungs",
+          text: "Die linke Toilette ist für die Mädchen, die rechte für die Jungs. Das gilt ohne Ausnahme."
+        },
+        {
+          icon: "🚦",
+          titel: "Die goldene Regel",
+          text: "Ist eine der beiden Toiletten schon besetzt, darf die andere nicht benutzt werden – auch wenn sie frei ist. Dann heißt es warten."
+        },
+        {
+          icon: "🚽",
+          titel: "Nicht im Stehen pinkeln",
+          text: "Gepinkelt wird im Sitzen. Immer."
+        },
+        {
+          icon: "🪝",
+          titel: "Handtücher an die Haken",
+          text: "Wenn du Handtücher hast, müssen die zum Trocknen aufgehängt werden – und zwar an den dafür vorgesehenen Haken. Auf keinen Fall über eine Stuhllehne legen."
+        }
+      ]
+    },
+
+    {
       titel: "Mülldienst",
       einleitung: "Der wichtigste der drei Dienste – wenn der ausfällt, merkt es das ganze Stockwerk.",
       regeln: [
@@ -314,6 +340,28 @@ const CONFIG = {
       ],
       richtig: [0, 1, 2],
       erklaerung: "Immer verfügbar sein sollten: Küchenpapier, Bio-Müllbeutel, Schwämme, Lappen und Backpapier. Lebensmittel wie Milch oder Kaffee kauft jeder selbst."
+    },
+    {
+      frage: "Auf einer der beiden Toiletten ist gerade jemand. Was machst du?",
+      optionen: [
+        "Warten – ist eine besetzt, bleibt die andere tabu",
+        "Die andere benutzen, die ist ja frei",
+        "Die andere benutzen, solange es die für mein Geschlecht ist",
+        "Anklopfen und fragen, ob es noch lange dauert"
+      ],
+      richtig: [0],
+      erklaerung: "Die goldene Regel: Ist eine der beiden Toiletten besetzt, bleibt die andere frei – da wird gewartet. Ansonsten gilt: links die Mädchen, rechts die Jungs. Und gepinkelt wird im Sitzen."
+    },
+    {
+      frage: "Dein Handtuch ist nass. Wo trocknest du es?",
+      optionen: [
+        "An den dafür vorgesehenen Haken",
+        "Über einer Stuhllehne",
+        "Über der Sofalehne im Wohnzimmer",
+        "Zusammengelegt liegen lassen, es trocknet von allein"
+      ],
+      richtig: [0],
+      erklaerung: "Handtücher müssen trocknen – aber ausschließlich an den dafür vorgesehenen Haken. Über eine Stuhllehne gehören sie auf keinen Fall."
     }
   ],
 
