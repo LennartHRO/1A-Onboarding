@@ -6,44 +6,63 @@
 const CONFIG = {
 
   /* --- Kopfzeile ------------------------------------------- */
-  seitentitel: "Dienste & Regeln",
+  seitentitel: "Stockwerksregeln",
   flur: "Flur 1A",
   untertitel: "Willkommen auf dem Stockwerk!",
 
   /* --- WhatsApp-Gruppenlink --------------------------------
-     Du kannst den Link direkt hier eintragen (beginnend mit https://).
-     Empfehlung: den Link Base64-kodiert eintragen, dann steht er
-     nicht im Klartext im Quelltext der Seite.
-     Kodieren: Browser öffnen -> F12 -> Konsole -> eintippen:
+     Steht hier Base64-kodiert, damit er nicht im Klartext im
+     Quelltext der Seite (und im öffentlichen Repo) auftaucht.
+     Neuen Link kodieren: Browser -> F12 -> Konsole -> eintippen:
          btoa("https://chat.whatsapp.com/DEIN-CODE")
-     Das Ergebnis (ohne Anführungszeichen) hier einsetzen.
+     Ergebnis ohne Anführungszeichen hier einsetzen.
+     Ein Link im Klartext (https://...) funktioniert auch.
      ---------------------------------------------------------- */
-  whatsappLink: "https://chat.whatsapp.com/BEISPIEL-LINK-HIER-EINSETZEN",
+  whatsappLink: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9IMFZWclJpTUh3M0NOclVTVFJkUHJC",
 
   /* --- Bestehensgrenze --------------------------------------
      1   = alle Fragen müssen richtig sein
      0.8 = 80 % reichen
      ---------------------------------------------------------- */
-  bestehensQuote: 1,
+  bestehensQuote: 0.8,
+
+  /* --- Hintergrundmusik -------------------------------------
+     Eingebaut ist eine selbst erzeugte 8-Bit-Melodie im Gameboy-Stil,
+     die per Web Audio direkt im Browser gespielt wird - also kein
+     Original-Soundtrack und keine Audiodatei noetig.
+     Eigene Datei stattdessen: Dateinamen eintragen, z. B. "musik.mp3",
+     und die Datei in denselben Ordner legen.
+     an: false schaltet die Musik komplett ab.
+     ---------------------------------------------------------- */
+  musik: {
+    an: true,
+    datei: "",
+    lautstaerke: 0.16
+  },
 
   /* --- Die Regeln, gegliedert in Abschnitte -----------------
      Beliebig viele Abschnitte, beliebig viele Regeln pro Abschnitt.
-     "einleitung" ist optional.
+     "einleitung" ist optional, "bild" ebenfalls.
      ---------------------------------------------------------- */
   abschnitte: [
     {
       titel: "Grundsätzliches",
-      einleitung: "Bei uns wohnen 16 Leute auf dem Stockwerk. Damit das funktioniert, gibt es drei Dienste, die reihum wandern.",
+      einleitung: "Bei uns wohnen 16 Leute auf dem Stockwerk. Damit das funktioniert, gibt es ein paar Absprachen und drei Dienste, die reihum wandern.",
       regeln: [
+        {
+          icon: "🤝",
+          titel: "Nett und respektvoll miteinander",
+          text: "Wir gehen freundlich und respektvoll miteinander um. Das ist die Grundlage für alles Weitere – auch dann, wenn mal etwas nicht rundläuft."
+        },
         {
           icon: "🔁",
           titel: "Drei Dienste pro Periode",
-          text: "Jeder übernimmt pro Periode je einmal den Küchendienst, den Mülldienst und den Wohnzimmerdienst. Meistens lässt sich alles gleichzeitig in derselben Woche erledigen."
+          text: "Jeder übernimmt pro Periode je einmal den Küchendienst, den Mülldienst und den Wohnzimmerdienst. Alle drei lassen sich auch gleichzeitig in derselben Woche absolvieren."
         },
         {
           icon: "✍️",
           titel: "Selbst in die Liste eintragen",
-          text: "Zu Beginn jeder Periode trägst du dich selbst in die Liste ein, die in der Küche hängt. Die aktuelle Liste ist voll – die neue hängen wir im Oktober aus."
+          text: "Zu Beginn jeder Periode trägst du dich selbst in die Liste ein, die in der Küche hängt. Die aktuelle Liste ist voll – die neue hängen wir im Oktober aus und kündigen das nochmal in der Gruppe an."
         },
         {
           icon: "👥",
@@ -54,6 +73,72 @@ const CONFIG = {
           icon: "✅",
           titel: "Abnahme durch einen Mitbewohner",
           text: "Die ordnungsgemäße Durchführung wird durch einen Mitbewohner abgenommen. Bei mangelhafter Ausführung wird die Person öffentlich angeprangert, bloßgestellt und getadelt!"
+        },
+        {
+          icon: "💸",
+          titel: "Splitwise beitreten",
+          text: "Alle Gemeinschaftsausgaben tragen wir in Splitwise ein – da musst du beitreten. Den Link gibt es in Kürze in der Gruppe."
+        }
+      ]
+    },
+
+    {
+      titel: "In der Küche gilt immer",
+      einleitung: "Unabhängig davon, wer gerade Dienst hat – das hier gilt für alle, jeden Tag.",
+      regeln: [
+        {
+          icon: "🧼",
+          titel: "Immer direkt spülen",
+          text: "Dein Geschirr spülst du sofort nach dem Kochen und Essen ab. Nichts zum Trocknen stehen lassen – auch nicht kurz und auch nicht bis später."
+        },
+        {
+          icon: "🧴",
+          titel: "Flächen und Tische abwischen",
+          text: "Tische und Arbeitsflächen wischst du nach der Benutzung ab. Jedes Mal, nicht nur dann, wenn etwas danebengegangen ist."
+        },
+        {
+          icon: "🚰",
+          titel: "Spüle sauber hinterlassen",
+          text: "Die Spüle bleibt sauber zurück – ohne Essensreste im Abfluss."
+        },
+        {
+          icon: "🧽",
+          titel: "Spülmittel holst du im Keller",
+          text: "Spülmittel gibt es im Keller. Es ist konzentriert und muss vor dem Benutzen mit Wasser verdünnt werden."
+        },
+        {
+          icon: "🛒",
+          titel: "Das sollte immer da sein",
+          text: "Küchenpapier, Bio-Müllbeutel, Schwämme, Lappen und Backpapier sollten immer verfügbar sein. Wenn etwas davon zur Neige geht, sag rechtzeitig in der Gruppe Bescheid."
+        }
+      ]
+    },
+
+    {
+      titel: "Mülldienst",
+      einleitung: "Der wichtigste der drei Dienste – wenn der ausfällt, merkt es das ganze Stockwerk.",
+      regeln: [
+        {
+          icon: "♻️",
+          titel: "Jede Woche frühzeitig entleeren",
+          text: "Plastikmüll, Papiermüll, Biomüll und Glasmüll. Aluminiummüll kommt in dieselbe Tonne wie der Plastikmüll."
+        },
+        {
+          icon: "📅",
+          titel: "Die Montagsregel",
+          text: "Am Montag sind alle Behälter erneut zu entleeren – egal, wie sehr sie gefüllt sind – und leer an den darauffolgenden Mülldienst zu übergeben. Sonntag ist übrigens Ruhetag: Da bleibt der Müll stehen, sonst reagiert so mancher Nachbar allergisch."
+        },
+        {
+          icon: "🚫",
+          titel: "Die große Restmülltonne ist nicht dein Job",
+          text: "Die große Restmülltonne leeren die Putzkräfte. Das gehört ausdrücklich nicht zum Mülldienst."
+        },
+        {
+          icon: "📍",
+          titel: "Wo die Tonnen stehen",
+          text: "Glas sowie Plastik & Alu stehen nordöstlich der Kreuzung. Biomüll, Papiermüll und Restmüll findest du südwestlich davon. Das Wertstoffmobil kommt donnerstags morgens an die Hiltenspergerstraße. Präg dir die Standorte gut ein – im Test musst du eine davon auf der Karte zeigen.",
+          bild: "karte-loesung.png",
+          bildAlt: "Karte mit den Standorten der Mülltonnen rund um die Kreuzung Clemensstraße / Hiltenspergerstraße"
         }
       ]
     },
@@ -64,7 +149,7 @@ const CONFIG = {
         {
           icon: "👀",
           titel: "Überwachung der Küchenordnung",
-          text: "Der Küchendienst achtet darauf, dass alle die Küchenregeln einhalten. Bei Verstößen weist er die Person darauf hin oder macht in der Gruppe darauf aufmerksam. Es ist NICHT seine Aufgabe, den Mitbewohnern hinterherzuräumen – er behält den Überblick und greift bei Bedarf ein."
+          text: "Der Küchendienst achtet darauf, dass alle die Küchenregeln einhalten. Bei Verstößen weist er die Person darauf hin oder macht in der Gruppe darauf aufmerksam. Es ist NICHT seine Aufgabe, den Mitbewohnern hinterherzuräumen – er behält den Überblick und spült nur im Notfall selbst."
         },
         {
           icon: "💬",
@@ -79,7 +164,7 @@ const CONFIG = {
         {
           icon: "💧",
           titel: "Wasserkocher entkalken",
-          text: "Der Wasserkocher wird regelmäßig mit einem geeigneten Reinigungsmittel entkalkt. Geht das Mittel zur Neige, kommt es auf die Einkaufsliste."
+          text: "Der Wasserkocher wird regelmäßig mit einem geeigneten Reinigungsmittel entkalkt. Geht das Mittel zur Neige, sag rechtzeitig Bescheid."
         },
         {
           icon: "🔌",
@@ -97,9 +182,9 @@ const CONFIG = {
           text: "Das Fach unter der Spüle ist in einem ordentlichen und sauberen Zustand zu halten."
         },
         {
-          icon: "🧻",
-          titel: "Geschirrhandtücher wechseln",
-          text: "Der Zustand der Geschirrhandtücher wird regelmäßig geprüft, bei Bedarf werden sie ausgetauscht – lieber früher als später."
+          icon: "🙋",
+          titel: "Geschirrhandtücher – dafür suchen wir noch jemanden",
+          text: "Das Wechseln und Waschen der Geschirrhandtücher gehört nicht mehr zum Küchendienst. Wir suchen dafür eine Person, die sich dauerhaft darum kümmert und im Gegenzug von allen drei Diensten komplett befreit ist. Interesse? Meld dich in der Gruppe."
         }
       ]
     },
@@ -120,7 +205,7 @@ const CONFIG = {
         {
           icon: "🧽",
           titel: "Boden staubsaugen",
-          text: "Der Boden wird einmal die Woche gestaubsaugt, auch der Teppich."
+          text: "Der Boden wird einmal die Woche gestaubsaugt."
         },
         {
           icon: "🪑",
@@ -138,37 +223,9 @@ const CONFIG = {
           text: "Alle Pflanzen im Wohnzimmer werden einmal gewässert, wenn nötig."
         },
         {
-          icon: "🛒",
-          titel: "Einkaufsliste pflegen",
-          text: "Immer verfügbar sein sollten: Küchenpapier, Bio-Müllbeutel, Schwämme, Lappen, Backpapier und Zwiebeln. Ist absehbar, dass etwas davon zur Neige geht, trägst du es frühzeitig in die Einkaufsliste ein. Was auf der Liste steht, wird einmal pro Woche besorgt."
-        },
-        {
           icon: "🧳",
           titel: "Staubsaugerbeutel kontrollieren",
-          text: "Es wird geprüft, ob der Beutel im Staubsauger seine maximale Füllhöhe erreicht hat. Gegebenenfalls wird ein neuer besorgt."
-        }
-      ]
-    },
-
-    {
-      titel: "Mülldienst",
-      regeln: [
-        {
-          icon: "♻️",
-          titel: "Jede Woche frühzeitig entleeren",
-          text: "Plastikmüll, Papiermüll, Biomüll und Glasmüll. Aluminiummüll kommt in dieselbe Tonne wie der Plastikmüll."
-        },
-        {
-          icon: "📅",
-          titel: "Die Montagsregel",
-          text: "Am Montag sind alle Behälter erneut zu entleeren – egal, wie sehr sie gefüllt sind – und leer an den darauffolgenden Mülldienst zu übergeben."
-        },
-        {
-          icon: "📍",
-          titel: "Wo die Tonnen stehen",
-          text: "Glas sowie Plastik & Alu stehen nordöstlich der Kreuzung. Biomüll, Papiermüll und Restmüll findest du südwestlich davon. Das Wertstoffmobil kommt donnerstags morgens an die Hiltenspergerstraße. Präg dir die Standorte gut ein – im Test musst du eine davon auf der Karte zeigen.",
-          bild: "karte-loesung.png",
-          bildAlt: "Karte mit den Standorten der Mülltonnen rund um die Kreuzung Clemensstraße / Hiltenspergerstraße"
+          text: "Prüf, ob der Beutel im Staubsauger seine maximale Füllhöhe erreicht hat, und wechsle ihn rechtzeitig. Es muss immer ein frischer Beutel auf Vorrat da sein – neue holst du kostenlos bei der Verwaltung, gekauft werden müssen sie nicht."
         }
       ]
     }
@@ -190,7 +247,7 @@ const CONFIG = {
         "Alle drei, aber nur wer länger als ein Semester bleibt"
       ],
       richtig: [0],
-      erklaerung: "Jeder übernimmt pro Periode alle drei Dienste je einmal – meistens lässt sich das in derselben Woche gleichzeitig erledigen. Das gilt für alle auf dem Stockwerk, auch für Feriengäste."
+      erklaerung: "Jeder übernimmt pro Periode alle drei Dienste je einmal. Die können auch alle gleichzeitig in derselben Woche absolviert werden. Das gilt für alle auf dem Stockwerk, auch für Feriengäste."
     },
     {
       frage: "Wie kommst du zu deinen Dienstwochen?",
@@ -201,7 +258,18 @@ const CONFIG = {
         "Man meldet sich beim Hausmeister"
       ],
       richtig: [0],
-      erklaerung: "Zu Beginn jeder Periode trägt sich jeder selbst in die Liste ein, die in der Küche hängt."
+      erklaerung: "Zu Beginn jeder Periode trägt sich jeder selbst in die Liste ein, die in der Küche hängt. Wann die neue Liste aushängt, kündigen wir nochmal in der Gruppe an."
+    },
+    {
+      frage: "Du hast gekocht und gegessen. Wann spülst du dein Geschirr?",
+      optionen: [
+        "Sofort – und zwar komplett, nichts bleibt zum Trocknen stehen",
+        "Ich stelle es zum Trocknen und räume es später weg",
+        "Spätestens am nächsten Morgen",
+        "Wenn kein sauberes Geschirr mehr da ist"
+      ],
+      richtig: [0],
+      erklaerung: "Immer direkt spülen und nichts zum Trocknen stehen lassen. Dazu gehört auch: Flächen abwischen und die Spüle ohne Reste im Abfluss hinterlassen."
     },
     {
       frage: "Du hast Küchendienst und siehst das dreckige Geschirr eines Mitbewohners. Was ist deine Aufgabe?",
@@ -212,40 +280,7 @@ const CONFIG = {
         "Nichts – wer Küchendienst hat, putzt nur am Ende der Woche"
       ],
       richtig: [0],
-      erklaerung: "Es ist ausdrücklich NICHT Aufgabe des Küchendienstes, den Mitbewohnern hinterherzuräumen. Er behält den Überblick, spricht Verstöße an und greift nur bei Bedarf ein."
-    },
-    {
-      frage: "In der Küche steht ungereinigtes Geschirr, das sich niemandem mehr zuordnen lässt. Und was ist mit den Flächen?",
-      optionen: [
-        "Der Küchendienst räumt es weg und bringt auch Tisch-, Arbeits- und Wandflächen in Ordnung",
-        "Es bleibt stehen, bis sich jemand meldet",
-        "Es wird entsorgt",
-        "Der Wohnzimmerdienst übernimmt das"
-      ],
-      richtig: [0],
-      erklaerung: "Lässt sich kein Verantwortlicher finden, wird der Küchendienst selbst tätig – für herrenlose Gegenstände genauso wie für Tisch-, Arbeits- und Wandflächen."
-    },
-    {
-      frage: "Bei welchen Küchengeräten muss ausdrücklich auch das Innere gereinigt werden?",
-      optionen: [
-        "Mikrowelle",
-        "Backofen",
-        "Toaster",
-        "Brotschneidemaschine"
-      ],
-      richtig: [0, 1],
-      erklaerung: "Bei Mikrowelle und Backofen steht ausdrücklich innen und außen. Toaster, Airfryer und Brotschneidemaschine werden von außen und gegebenenfalls innen gereinigt."
-    },
-    {
-      frage: "Das Entkalkungsmittel für den Wasserkocher geht zur Neige. Was tust du?",
-      optionen: [
-        "Ich setze es auf die Einkaufsliste",
-        "Ich kaufe es selbst und teile die Kosten in der Gruppe auf",
-        "Ich frage in der Gruppe, wer noch welches hat",
-        "Nichts – der nächste Küchendienst wird es schon merken"
-      ],
-      richtig: [0],
-      erklaerung: "Geht das Reinigungsmittel zur Neige, kommt es auf die Einkaufsliste. Was dort steht, wird einmal pro Woche besorgt."
+      erklaerung: "Es ist ausdrücklich NICHT Aufgabe des Küchendienstes, den Mitbewohnern hinterherzuräumen. Du behältst den Überblick, sprichst Verstöße an – und spülst nur im Notfall selbst."
     },
     {
       frage: "Was gilt beim Mülldienst am Montag?",
@@ -256,41 +291,29 @@ const CONFIG = {
         "Der neue Mülldienst entscheidet selbst, was nötig ist"
       ],
       richtig: [0],
-      erklaerung: "Am Montag sind alle Behälter erneut zu entleeren, egal wie sehr sie gefüllt sind, und leer an den darauffolgenden Mülldienst zu übergeben."
+      erklaerung: "Am Montag sind alle Behälter erneut zu entleeren, egal wie sehr sie gefüllt sind, und leer an den darauffolgenden Mülldienst zu übergeben. Fun Fact: Sonntag ist Ruhetag – so mancher Nachbar reagiert darauf tatsächlich allergisch. ;)"
     },
     {
-      frage: "Wohin kommt der Aluminiummüll?",
+      frage: "Beim Müll rausbringen: Wohin kommt der Aluminiummüll?",
       optionen: [
         "In dieselbe Tonne wie der Plastikmüll",
-        "Zum Glasmüll",
         "In den Biomüll",
         "In einen eigenen Behälter im Keller"
       ],
       richtig: [0],
-      erklaerung: "Aluminiummüll ist eigentlich die gleiche Tonne wie der Plastikmüll. Wöchentlich entleert werden Plastik-, Papier-, Bio- und Glasmüll."
+      erklaerung: "Aluminiummüll ist eigentlich die gleiche Tonne wie der Plastikmüll. Wöchentlich entleert werden Plastik-, Papier-, Bio- und Glasmüll – die große Restmülltonne übernehmen die Putzkräfte."
     },
     {
-      frage: "Wie oft wird beim Wohnzimmerdienst gesaugt?",
-      optionen: [
-        "Einmal die Woche, der Teppich inbegriffen",
-        "Einmal die Woche, den Teppich aber nur bei sichtbarem Schmutz",
-        "Jeden zweiten Tag",
-        "Nur wenn es sichtbar dreckig ist"
-      ],
-      richtig: [0],
-      erklaerung: "Der Boden wird einmal die Woche gestaubsaugt, auch auf dem Teppich. Außerdem wird geprüft, ob der Staubsaugerbeutel voll ist."
-    },
-    {
-      frage: "Welche dieser Sachen sollten laut Einkaufsliste immer verfügbar sein?",
+      frage: "Welche dieser Sachen sollten bei uns immer verfügbar sein?",
       optionen: [
         "Küchenpapier",
         "Backpapier",
-        "Zwiebeln",
+        "Schwämme",
         "Milch",
         "Kaffee"
       ],
       richtig: [0, 1, 2],
-      erklaerung: "Immer verfügbar sein sollten: Küchenpapier, Bio-Müllbeutel, Schwämme, Lappen, Backpapier und Zwiebeln. Lebensmittel wie Milch oder Kaffee kauft jeder selbst."
+      erklaerung: "Immer verfügbar sein sollten: Küchenpapier, Bio-Müllbeutel, Schwämme, Lappen und Backpapier. Lebensmittel wie Milch oder Kaffee kauft jeder selbst."
     }
   ],
 
@@ -346,5 +369,5 @@ const CONFIG = {
   },
 
   /* --- Text auf der Abschluss-Seite -------------------------- */
-  abschlussText: "Du kennst jetzt die Dienste und Regeln. Willkommen auf dem Flur!"
+  abschlussText: "Du kennst jetzt die Stockwerksregeln. Willkommen auf dem Flur!"
 };

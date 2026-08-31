@@ -392,7 +392,10 @@
   }
 
   /* ---------- Navigation ---------- */
-  $("btn-start").addEventListener("click", function () { zeige("screen-rules"); });
+  $("btn-start").addEventListener("click", function () {
+    musikAnwerfen();
+    zeige("screen-rules");
+  });
 
   $("btn-to-quiz").addEventListener("click", function () {
     if (!regelnGelesen) return;
@@ -432,6 +435,43 @@
     $("btn-to-quiz").textContent = "Zurück";
     zeige("screen-rules");
   });
+
+  /* ---------- Hintergrundmusik ---------- */
+  var MUSIK_KEY = "kuechenregeln-musik-aus";
+  var musikBtn = $("btn-musik");
+
+  function musikGewuenscht() {
+    try { return localStorage.getItem(MUSIK_KEY) !== "1"; } catch (e) { return true; }
+  }
+
+  function musikSymbolSetzen() {
+    var an = Musik.laeuft();
+    musikBtn.textContent = an ? "🔊" : "🔇";
+    musikBtn.setAttribute("aria-pressed", an ? "true" : "false");
+    musikBtn.title = an ? "Musik ausschalten" : "Musik einschalten";
+  }
+
+  // Browser erlauben Ton erst nach einer Nutzeraktion - daher beim ersten Klick starten
+  function musikAnwerfen() {
+    if (!Musik.verfuegbar() || !musikGewuenscht() || Musik.laeuft()) return;
+    Musik.start();
+    musikSymbolSetzen();
+  }
+
+  if (Musik.verfuegbar()) {
+    musikBtn.hidden = false;
+    musikSymbolSetzen();
+    musikBtn.addEventListener("click", function () {
+      if (Musik.laeuft()) {
+        Musik.stop();
+        try { localStorage.setItem(MUSIK_KEY, "1"); } catch (e) {}
+      } else {
+        try { localStorage.removeItem(MUSIK_KEY); } catch (e) {}
+        Musik.start();
+      }
+      musikSymbolSetzen();
+    });
+  }
 
   /* ---------- Start ---------- */
   $("btn-whatsapp").href = whatsappUrl();

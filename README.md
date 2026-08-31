@@ -12,6 +12,7 @@ machen einen kurzen Test und bekommen erst danach den Link zur WhatsApp-Gruppe.
 | `index.html` | Die Seite selbst |
 | `styles.css` | Aussehen (hell/dunkel automatisch) |
 | `app.js` | Ablauf-Logik |
+| `musik.js` | 8-Bit-Hintergrundmusik (wird im Browser erzeugt) |
 | `qr.html` | QR-Code + fertigen Aushang zum Ausdrucken erzeugen |
 | `karte.png` | Leere Karte für die Aufgabe im Test |
 | `karte-loesung.png` | Karte mit den Tonnen-Standorten, wird in den Regeln gezeigt |
@@ -23,25 +24,20 @@ Zum Zurücksetzen (wenn du den Test schon bestanden hast): Seite im privaten Fen
 
 ---
 
-## Schritt 1: WhatsApp-Link eintragen
+## Schritt 1: WhatsApp-Link — erledigt
 
-In WhatsApp: Gruppe → Gruppeninfo → *Über Link einladen* → Link kopieren.
-
-Diesen Link in `config.js` bei `whatsappLink` eintragen.
-
-**Empfehlung:** den Link nicht im Klartext eintragen, sondern kodiert –
-sonst kann man ihn im Quelltext der Seite finden, ohne den Test zu machen.
-Dazu im Browser `F12` drücken → Reiter *Konsole* → eintippen:
+Der Gruppenlink ist eingetragen, und zwar Base64-kodiert, damit er nicht im Klartext
+im öffentlichen Repo steht. Neuen Link setzen: Browser `F12` → *Konsole* → eintippen
 
 ```js
-btoa("https://chat.whatsapp.com/DEIN-CODE")
+btoa("https://chat.whatsapp.com/DEIN-NEUER-CODE")
 ```
 
-Das Ergebnis (ohne Anführungszeichen) in `config.js` einsetzen. Die App erkennt beides automatisch.
+und das Ergebnis in `config.js` bei `whatsappLink` einsetzen. Klartext funktioniert auch.
 
-> Ehrlich gesagt: Das ist eine Hürde, kein echter Schutz – wer sich auskennt, kommt an den Link.
-> Für ein Wohnheim reicht das völlig. Falls doch mal jemand Unbefugtes reinkommt: In WhatsApp
-> kannst du den Einladungslink jederzeit zurücksetzen (dann hier den neuen eintragen).
+> Das ist eine Hürde, kein echter Schutz – wer sich auskennt, kommt an den Link.
+> Falls doch mal jemand Unbefugtes reinkommt: In WhatsApp kannst du den Einladungslink
+> jederzeit zurücksetzen und hier den neuen eintragen.
 
 ## Schritt 2: Regeln und Fragen pflegen
 
@@ -56,7 +52,8 @@ Inhalte stehen komplett in `config.js`:
 - Reihenfolge von Fragen und Antworten wird beim Anzeigen automatisch gemischt.
 - `bestehensQuote: 1` heißt: alle Fragen müssen richtig sein. `0.8` = 80 % reichen.
 
-Aktuell: **23 Regeln, 10 Fragen + 1 Kartenaufgabe**, Inhalt aus `src/Küchendienst 1A.pdf`.
+Aktuell: **30 Regeln, 7 Fragen + 1 Kartenaufgabe**, Bestehensgrenze **80 %**
+(bei 8 Aufgaben heißt das: ein Fehler ist erlaubt, zwei nicht), Inhalt aus `src/Küchendienst 1A.pdf`.
 
 ### Die Kartenaufgabe
 
@@ -144,3 +141,11 @@ Vor dem Aufhängen einmal selbst mit dem Handy scannen und den Ablauf durchklick
   nächsten Öffnen direkt auf der Seite mit dem Gruppenlink.
 - **Der „Weiter zum Test"-Button** wird erst aktiv, wenn man bis ans Ende der Regeln
   gescrollt hat (spätestens nach 45 Sekunden).
+- **Überspringen geht nicht:** Nach dem Auswählen muss erst geprüft werden, den
+  Weiter-Button gibt es vorher gar nicht.
+- **Musik:** Die 8-Bit-Melodie ist selbst erzeugt (Web Audio), keine Audiodatei und kein
+  fremder Soundtrack. Sie startet erst beim Klick auf „Los geht's" – vorher lassen Browser
+  ohnehin keinen Ton zu – und lässt sich oben rechts abschalten; das wird gemerkt.
+  Eigene Musik: Datei in den Ordner legen und in `config.js` unter `musik.datei`
+  eintragen (dann bitte auf die Rechte an der Datei achten). `musik.an: false` schaltet
+  alles ab.

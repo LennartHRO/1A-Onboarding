@@ -3,13 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Dienste &amp; Regeln – Flur 1A</title>
+  <title>Stockwerksregeln – Flur 1A</title>
   <meta name="description" content="Regeln lesen, kurzen Test machen, WhatsApp-Gruppe beitreten.">
   <meta name="theme-color" content="#0f766e">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<button id="btn-musik" class="musik-btn" type="button" hidden
+        aria-label="Musik an oder aus" title="Musik an oder aus">🔈</button>
 
 <div class="shell">
 
@@ -24,9 +27,9 @@
     <div class="card">
       <p>Bevor du in die WhatsApp-Gruppe kommst, machst du einmal kurz Folgendes:</p>
       <ol class="steps">
-        <li><span class="step-num">1</span> Regeln der drei Dienste lesen</li>
+        <li><span class="step-num">1</span> Stockwerksregeln lesen</li>
         <li><span class="step-num">2</span> Kurzen Test machen</li>
-        <li><span class="step-num">3</span> Gruppen-Link bekommen</li>
+        <li><span class="step-num">3</span> Gruppen-Link bekommen 🎉</li>
       </ol>
       <p class="muted">Dauert ungefähr 5 Minuten.</p>
     </div>
@@ -37,7 +40,7 @@
   <!-- ============ 2. REGELN ============ -->
   <section id="screen-rules" class="screen" hidden>
     <header class="page-head">
-      <h2>Unsere Dienste &amp; Regeln</h2>
+      <h2>Stockwerksregeln</h2>
       <p class="muted">Lies dir alles in Ruhe durch – danach wird gefragt. Dauert etwa 3 Minuten.</p>
     </header>
 
@@ -110,9 +113,10 @@
 
 </div>
 
-<footer class="foot">Dienste &amp; Regeln · <span id="foot-flur">Flur 1A</span></footer>
+<footer class="foot">Stockwerksregeln · <span id="foot-flur">Flur 1A</span></footer>
 
 <script src="config.js"></script>
+<script src="musik.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
