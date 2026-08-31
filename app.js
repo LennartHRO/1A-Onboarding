@@ -32,32 +32,47 @@
   $("hero-untertitel").textContent = CONFIG.untertitel;
   $("foot-flur").textContent = CONFIG.flur;
   $("done-text").textContent = CONFIG.abschlussText;
-  document.title = "Küchenregeln – " + CONFIG.flur;
+  document.title = CONFIG.seitentitel + " – " + CONFIG.flur;
 
   /* ---------- Regeln rendern ---------- */
   (function renderRegeln() {
     var ziel = $("rules-list");
-    CONFIG.regeln.forEach(function (r) {
-      var karte = document.createElement("div");
-      karte.className = "rule";
 
-      var icon = document.createElement("div");
-      icon.className = "rule-icon";
-      icon.textContent = r.icon || "•";
+    CONFIG.abschnitte.forEach(function (abschnitt) {
+      var kopf = document.createElement("h3");
+      kopf.className = "abschnitt";
+      kopf.textContent = abschnitt.titel;
+      ziel.appendChild(kopf);
 
-      var box = document.createElement("div");
-      var titel = document.createElement("p");
-      titel.className = "rule-title";
-      titel.textContent = r.titel;
-      var text = document.createElement("p");
-      text.className = "rule-text";
-      text.textContent = r.text;
+      if (abschnitt.einleitung) {
+        var intro = document.createElement("p");
+        intro.className = "abschnitt-intro";
+        intro.textContent = abschnitt.einleitung;
+        ziel.appendChild(intro);
+      }
 
-      box.appendChild(titel);
-      box.appendChild(text);
-      karte.appendChild(icon);
-      karte.appendChild(box);
-      ziel.appendChild(karte);
+      abschnitt.regeln.forEach(function (r) {
+        var karte = document.createElement("div");
+        karte.className = "rule";
+
+        var icon = document.createElement("div");
+        icon.className = "rule-icon";
+        icon.textContent = r.icon || "•";
+
+        var box = document.createElement("div");
+        var titel = document.createElement("p");
+        titel.className = "rule-title";
+        titel.textContent = r.titel;
+        var text = document.createElement("p");
+        text.className = "rule-text";
+        text.textContent = r.text;
+
+        box.appendChild(titel);
+        box.appendChild(text);
+        karte.appendChild(icon);
+        karte.appendChild(box);
+        ziel.appendChild(karte);
+      });
     });
   })();
 

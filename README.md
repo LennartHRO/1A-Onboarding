@@ -8,6 +8,7 @@ machen einen kurzen Test und bekommen erst danach den Link zur WhatsApp-Gruppe.
 | Datei | Wofür |
 |---|---|
 | `config.js` | **Hier änderst du alles**: Regeln, Testfragen, WhatsApp-Link |
+| `src/` | Quellen: das Original-PDF mit den Dienstregeln |
 | `index.html` | Die Seite selbst |
 | `styles.css` | Aussehen (hell/dunkel automatisch) |
 | `app.js` | Ablauf-Logik |
@@ -40,14 +41,24 @@ Das Ergebnis (ohne Anführungszeichen) in `config.js` einsetzen. Die App erkennt
 > Für ein Wohnheim reicht das völlig. Falls doch mal jemand Unbefugtes reinkommt: In WhatsApp
 > kannst du den Einladungslink jederzeit zurücksetzen (dann hier den neuen eintragen).
 
-## Schritt 2: Regeln und Fragen eintragen
+## Schritt 2: Regeln und Fragen pflegen
 
-Alles in `config.js`, direkt darüber steht jeweils erklärt, wie es geht.
-Bei den Fragen zählt `richtig: [0]` die Antwortmöglichkeiten ab **0** –
-`[0]` ist also die erste Option. Mehrere Zahlen = Mehrfachauswahl.
-Die Reihenfolge der Fragen und Antworten wird beim Anzeigen automatisch gemischt.
+Inhalte stehen komplett in `config.js`:
 
-Mit `bestehensQuote: 1` müssen alle Fragen richtig sein. `0.8` = 80 % reichen.
+- **`abschnitte`** – die Regeln, gegliedert nach *Grundsätzliches*, *Küchendienst*,
+  *Wohnzimmerdienst* und *Mülldienst*. Jeder Abschnitt hat einen `titel`, optional eine
+  `einleitung` und beliebig viele `regeln` aus `icon`, `titel` und `text`.
+- **`fragen`** – der Test. `richtig: [0]` zählt die Antwortmöglichkeiten ab **0**,
+  `[0]` ist also die erste Option. Mehrere Zahlen (`[0, 1]`) ergeben automatisch eine
+  Mehrfachauswahl. `erklaerung` erscheint nur, wenn falsch geantwortet wurde.
+- Reihenfolge von Fragen und Antworten wird beim Anzeigen automatisch gemischt.
+- `bestehensQuote: 1` heißt: alle Fragen müssen richtig sein. `0.8` = 80 % reichen.
+
+Aktuell: **22 Regeln, 10 Fragen**, Inhalt aus `src/Küchendienst 1A.pdf`.
+
+> Zeitabhängige Stelle: Im Abschnitt *Grundsätzliches* steht bei „Selbst in die Liste
+> eintragen", dass die aktuelle Liste voll ist und die neue im Oktober aushängt.
+> Das gehört angepasst, sobald die neue Liste hängt.
 
 ## Schritt 3: Ins Netz stellen (kostenlos)
 
