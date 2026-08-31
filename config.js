@@ -102,6 +102,11 @@ const CONFIG = {
           text: "Die Spüle bleibt sauber zurück – ohne Essensreste im Abfluss."
         },
         {
+          icon: "🪝",
+          titel: "Küchenhandtücher an die Haken",
+          text: "Feuchte Küchenhandtücher müssen trocknen – und zwar an den dafür vorgesehenen Haken. Auf keinen Fall über eine Stuhllehne legen."
+        },
+        {
           icon: "🧽",
           titel: "Spülmittel holst du im Keller",
           text: "Spülmittel gibt es im Keller. Es ist konzentriert und muss vor dem Benutzen mit Wasser verdünnt werden."
@@ -131,11 +136,6 @@ const CONFIG = {
           icon: "🚽",
           titel: "Nicht im Stehen pinkeln",
           text: "Gepinkelt wird im Sitzen. Immer."
-        },
-        {
-          icon: "🪝",
-          titel: "Handtücher an die Haken",
-          text: "Wenn du Handtücher hast, müssen die zum Trocknen aufgehängt werden – und zwar an den dafür vorgesehenen Haken. Auf keinen Fall über eine Stuhllehne legen."
         }
       ]
     },
@@ -353,15 +353,15 @@ const CONFIG = {
       erklaerung: "Die goldene Regel: Ist eine der beiden Toiletten besetzt, bleibt die andere frei – da wird gewartet. Ansonsten gilt: links die Mädchen, rechts die Jungs. Und gepinkelt wird im Sitzen."
     },
     {
-      frage: "Dein Handtuch ist nass. Wo trocknest du es?",
+      frage: "Das Küchenhandtuch ist feucht. Wohin damit?",
       optionen: [
-        "An den dafür vorgesehenen Haken",
-        "Über einer Stuhllehne",
-        "Über der Sofalehne im Wohnzimmer",
-        "Zusammengelegt liegen lassen, es trocknet von allein"
+        "Zum Trocknen an die dafür vorgesehenen Haken",
+        "Über eine Stuhllehne",
+        "Über die Sofalehne im Wohnzimmer",
+        "Zusammengelegt auf die Arbeitsfläche"
       ],
       richtig: [0],
-      erklaerung: "Handtücher müssen trocknen – aber ausschließlich an den dafür vorgesehenen Haken. Über eine Stuhllehne gehören sie auf keinen Fall."
+      erklaerung: "Küchenhandtücher müssen trocknen – aber ausschließlich an den dafür vorgesehenen Haken. Über eine Stuhllehne gehören sie auf keinen Fall."
     }
   ],
 
