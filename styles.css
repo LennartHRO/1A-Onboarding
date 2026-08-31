@@ -1,0 +1,208 @@
+/* ---------- Farben & Grundlagen ---------- */
+:root {
+  --bg:        #f6f5f1;
+  --surface:   #ffffff;
+  --border:    #e3e0d8;
+  --text:      #1c1b19;
+  --text-soft: #6b6862;
+  --accent:    #0f766e;
+  --accent-dk: #0b5a54;
+  --accent-bg: #e6f2f0;
+  --good:      #15803d;
+  --good-bg:   #e8f5ec;
+  --bad:       #b91c1c;
+  --bad-bg:    #fbeaea;
+  --wa:        #25d366;
+  --radius:    14px;
+  --shadow:    0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #17181a;
+    --surface:   #1f2124;
+    --border:    #33363b;
+    --text:      #ececea;
+    --text-soft: #a0a3a8;
+    --accent:    #2dd4bf;
+    --accent-dk: #14b8a6;
+    --accent-bg: #16302e;
+    --good:      #4ade80;
+    --good-bg:   #16301f;
+    --bad:       #f87171;
+    --bad-bg:    #331d1d;
+    --shadow:    0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25);
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 24px 18px 140px;
+}
+
+h1 { font-size: 30px; line-height: 1.2; margin: 0 0 6px; letter-spacing: -.02em; }
+h2 { font-size: 21px; line-height: 1.3; margin: 0 0 4px; letter-spacing: -.01em; }
+p  { margin: 0 0 12px; }
+p:last-child { margin-bottom: 0; }
+
+.muted { color: var(--text-soft); }
+.small { font-size: 14px; }
+
+/* ---------- Hero ---------- */
+.hero { text-align: center; padding: 28px 0 22px; }
+.hero-emoji { font-size: 60px; line-height: 1; margin-bottom: 10px; }
+.hero-sub { color: var(--text-soft); margin: 0; }
+
+.page-head { margin: 4px 0 18px; }
+
+/* ---------- Karten ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.card-accent { border-color: var(--accent); }
+
+/* ---------- Schritte auf der Startseite ---------- */
+.steps { list-style: none; margin: 14px 0; padding: 0; }
+.steps li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.steps li:last-child { border-bottom: 0; }
+.step-num {
+  flex: 0 0 28px; height: 28px;
+  display: grid; place-items: center;
+  background: var(--accent-bg); color: var(--accent-dk);
+  border-radius: 50%; font-size: 14px; font-weight: 700;
+}
+@media (prefers-color-scheme: dark) { .step-num { color: var(--accent); } }
+
+/* ---------- Regel-Karten ---------- */
+.rule {
+  display: flex; gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+}
+.rule-icon { font-size: 26px; line-height: 1.2; flex: 0 0 auto; }
+.rule-title { font-weight: 650; margin: 0 0 3px; font-size: 17px; }
+.rule-text { margin: 0; color: var(--text-soft); font-size: 15px; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: block; width: 100%;
+  padding: 15px 18px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: 17px; font-weight: 600;
+  font-family: inherit;
+  text-align: center; text-decoration: none;
+  cursor: pointer;
+  transition: transform .06s ease, opacity .15s ease, background .15s ease;
+  margin-bottom: 10px;
+}
+.btn:active { transform: scale(.985); }
+.btn-primary { background: var(--accent); color: #fff; }
+@media (prefers-color-scheme: dark) { .btn-primary { color: #08302c; } }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+.btn-ghost {
+  background: transparent; color: var(--text-soft);
+  border-color: var(--border);
+}
+.btn-whatsapp { background: var(--wa); color: #07301a; margin-top: 6px; }
+.link-btn {
+  background: none; border: 0; padding: 0;
+  color: var(--accent); font: inherit; font-size: 14px;
+  text-decoration: underline; cursor: pointer;
+}
+
+/* ---------- Fixierte Leiste unten ---------- */
+.sticky-bar {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 62%, transparent);
+  z-index: 5;
+}
+.sticky-bar > * { max-width: 524px; margin-left: auto; margin-right: auto; }
+.sticky-bar .btn { margin-bottom: 0; }
+.hint {
+  text-align: center; font-size: 13px; color: var(--text-soft);
+  margin: 0 0 8px;
+}
+.hint[hidden] { display: none; }
+
+/* ---------- Fortschritt ---------- */
+.progress-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
+.progress-track { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); border-radius: 99px; transition: width .3s ease; }
+
+/* ---------- Quiz ---------- */
+.question { margin-bottom: 14px; }
+.options { display: flex; flex-direction: column; gap: 9px; }
+
+.opt {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  background: var(--bg);
+  font-size: 16px;
+  transition: border-color .12s ease, background .12s ease;
+}
+.opt input { margin: 3px 0 0; accent-color: var(--accent); flex: 0 0 auto; width: 18px; height: 18px; }
+.opt:has(input:checked) { border-color: var(--accent); background: var(--accent-bg); }
+.opt.locked { cursor: default; }
+.opt.is-correct { border-color: var(--good); background: var(--good-bg); }
+.opt.is-wrong   { border-color: var(--bad);  background: var(--bad-bg); }
+.opt-mark { margin-left: auto; font-weight: 700; flex: 0 0 auto; }
+.opt.is-correct .opt-mark { color: var(--good); }
+.opt.is-wrong   .opt-mark { color: var(--bad); }
+
+.feedback {
+  margin-top: 14px; padding: 13px 15px;
+  border-radius: 12px; font-size: 15px;
+  border-left: 4px solid;
+}
+.feedback.ok  { background: var(--good-bg); border-color: var(--good); }
+.feedback.no  { background: var(--bad-bg);  border-color: var(--bad); }
+.feedback strong { display: block; margin-bottom: 3px; }
+
+/* ---------- Fehlerliste ---------- */
+.mistakes { margin-top: 12px; }
+.mistakes div {
+  padding: 10px 0; border-top: 1px solid var(--border);
+  font-size: 15px; color: var(--text-soft);
+}
+.mistakes div:first-child { border-top: 0; }
+
+/* ---------- Fuß ---------- */
+.foot {
+  text-align: center; font-size: 12px; color: var(--text-soft);
+  padding: 0 18px 26px;
+}
+.screen[hidden] { display: none; }

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Küchenregeln – Flur 1A</title>
+  <meta name="description" content="Küchenregeln lesen, kurzen Test machen, WhatsApp-Gruppe beitreten.">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍳</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ============ 1. WILLKOMMEN ============ -->
+  <section id="screen-start" class="screen">
+    <div class="hero">
+      <div class="hero-emoji">🍳</div>
+      <h1 id="hero-flur">Flur 1A</h1>
+      <p class="hero-sub" id="hero-untertitel">Willkommen im Wohnheim!</p>
+    </div>
+
+    <div class="card">
+      <p>Bevor du in die WhatsApp-Gruppe kommst, machst du einmal kurz Folgendes:</p>
+      <ol class="steps">
+        <li><span class="step-num">1</span> Küchenregeln lesen</li>
+        <li><span class="step-num">2</span> Kurzen Test machen</li>
+        <li><span class="step-num">3</span> Gruppen-Link bekommen</li>
+      </ol>
+      <p class="muted">Dauert ungefähr 3 Minuten.</p>
+    </div>
+
+    <button class="btn btn-primary" id="btn-start">Los geht's</button>
+  </section>
+
+  <!-- ============ 2. REGELN ============ -->
+  <section id="screen-rules" class="screen" hidden>
+    <header class="page-head">
+      <h2>Die Küchenregeln</h2>
+      <p class="muted">Lies dir alles in Ruhe durch – danach wird gefragt.</p>
+    </header>
+
+    <div id="rules-list"></div>
+
+    <div id="rules-sentinel" aria-hidden="true"></div>
+
+    <div class="sticky-bar">
+      <p class="hint" id="rules-hint">Scroll bis ans Ende der Regeln</p>
+      <button class="btn btn-primary" id="btn-to-quiz" disabled>Weiter zum Test</button>
+    </div>
+  </section>
+
+  <!-- ============ 3. TEST ============ -->
+  <section id="screen-quiz" class="screen" hidden>
+    <header class="page-head">
+      <div class="progress-row">
+        <span class="muted" id="quiz-counter">Frage 1 von 2</span>
+        <button class="link-btn" id="btn-back-to-rules">Regeln nochmal ansehen</button>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="quiz-progress"></div></div>
+    </header>
+
+    <div class="card">
+      <h2 id="quiz-question" class="question"></h2>
+      <p class="muted small" id="quiz-multi-hint" hidden>Mehrere Antworten sind richtig.</p>
+      <div id="quiz-options" class="options"></div>
+      <div id="quiz-feedback" class="feedback" hidden></div>
+    </div>
+
+    <div class="sticky-bar">
+      <button class="btn btn-primary" id="btn-check" disabled>Antwort prüfen</button>
+      <button class="btn btn-primary" id="btn-next" hidden>Weiter</button>
+    </div>
+  </section>
+
+  <!-- ============ 4a. NICHT BESTANDEN ============ -->
+  <section id="screen-fail" class="screen" hidden>
+    <div class="hero">
+      <div class="hero-emoji">📖</div>
+      <h1>Fast!</h1>
+      <p class="hero-sub" id="fail-score"></p>
+    </div>
+    <div class="card">
+      <p>Kein Problem – schau dir die Regeln nochmal an und probier es danach direkt nochmal.</p>
+      <div id="fail-list" class="mistakes"></div>
+    </div>
+    <button class="btn btn-primary" id="btn-retry-rules">Regeln nochmal lesen</button>
+    <button class="btn btn-ghost" id="btn-retry-quiz">Direkt nochmal testen</button>
+  </section>
+
+  <!-- ============ 4b. BESTANDEN ============ -->
+  <section id="screen-done" class="screen" hidden>
+    <div class="hero">
+      <div class="hero-emoji">🎉</div>
+      <h1>Geschafft!</h1>
+      <p class="hero-sub" id="done-text"></p>
+    </div>
+
+    <div class="card card-accent">
+      <p><strong>Dein Zugang zur Gruppe</strong></p>
+      <p class="muted">Tipp: Schreib in der Gruppe kurz Hallo mit deinem Namen und deiner Zimmernummer.</p>
+      <a class="btn btn-whatsapp" id="btn-whatsapp" href="#" target="_blank" rel="noopener">
+        WhatsApp-Gruppe beitreten
+      </a>
+    </div>
+
+    <button class="btn btn-ghost" id="btn-reread">Regeln nochmal nachlesen</button>
+  </section>
+
+</div>
+
+<footer class="foot">Küchenregeln <span id="foot-flur">Flur 1A</span></footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
