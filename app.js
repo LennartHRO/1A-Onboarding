@@ -69,6 +69,28 @@
 
         box.appendChild(titel);
         box.appendChild(text);
+
+        if (r.bild) {
+          var link = document.createElement("a");
+          link.className = "rule-bild";
+          link.href = r.bild;
+          link.target = "_blank";
+          link.rel = "noopener";
+
+          var bild = document.createElement("img");
+          bild.src = r.bild;
+          bild.alt = r.bildAlt || r.titel;
+          bild.loading = "lazy";
+
+          link.appendChild(bild);
+          box.appendChild(link);
+
+          var lupe = document.createElement("p");
+          lupe.className = "rule-bild-hinweis";
+          lupe.textContent = "Zum Vergrößern antippen";
+          box.appendChild(lupe);
+        }
+
         karte.appendChild(icon);
         karte.appendChild(box);
         ziel.appendChild(karte);
@@ -102,7 +124,7 @@
   /* ---------- Quiz ---------- */
   var nurNachlesen = false;
 
-  var quiz = { fragen: [], index: 0, richtigCount: 0, fehler: [], geprueft: false };
+  var quiz = { fragen: [], index: 0, richtigCount: 0, fehler: [], geprueft: false, kartenAntwort: null };
 
   function mische(liste) {
     var a = liste.slice();
@@ -114,17 +136,32 @@
   }
 
   function quizAufbauen() {
-    quiz.fragen = mische(CONFIG.fragen).map(function (f) {
+    var aufgaben = CONFIG.fragen.map(function (f) {
       var optionen = f.optionen.map(function (text, i) {
         return { text: text, richtig: f.richtig.indexOf(i) !== -1 };
       });
       return {
+        typ: "auswahl",
         frage: f.frage,
         optionen: mische(optionen),
         erklaerung: f.erklaerung || "",
         mehrfach: f.richtig.length > 1
       };
     });
+
+    // Kartenaufgabe: pro Durchlauf wird zufaellig genau eine Tonne abgefragt
+    if (CONFIG.karte && CONFIG.karte.tonnen && CONFIG.karte.tonnen.length) {
+      var tonnen = CONFIG.karte.tonnen;
+      var t = tonnen[Math.floor(Math.random() * tonnen.length)];
+      aufgaben.push({
+        typ: "karte",
+        tonne: t,
+        frage: "Wo steht die Tonne für " + t.name + "?",
+        erklaerung: t.hinweis || ""
+      });
+    }
+
+    quiz.fragen = mische(aufgaben);
     quiz.index = 0;
     quiz.richtigCount = 0;
     quiz.fehler = [];
@@ -133,11 +170,11 @@
   function frageAnzeigen() {
     var f = quiz.fragen[quiz.index];
     quiz.geprueft = false;
+    quiz.kartenAntwort = null;
 
     $("quiz-counter").textContent = "Frage " + (quiz.index + 1) + " von " + quiz.fragen.length;
     $("quiz-progress").style.width = (quiz.index / quiz.fragen.length * 100) + "%";
     $("quiz-question").textContent = f.frage;
-    $("quiz-multi-hint").hidden = !f.mehrfach;
     $("quiz-feedback").hidden = true;
     $("btn-check").hidden = false;
     $("btn-check").disabled = true;
@@ -145,6 +182,17 @@
 
     var box = $("quiz-options");
     box.innerHTML = "";
+
+    if (f.typ === "karte") {
+      $("quiz-multi-hint").hidden = false;
+      $("quiz-multi-hint").textContent =
+        "Tippe die Stelle auf der Karte an. Der Ort muss nur ungefähr stimmen.";
+      karteAufbauen(box);
+      return;
+    }
+
+    $("quiz-multi-hint").hidden = !f.mehrfach;
+    $("quiz-multi-hint").textContent = "Mehrere Antworten sind richtig.";
 
     f.optionen.forEach(function (opt, i) {
       var label = document.createElement("label");
@@ -174,11 +222,119 @@
     return s;
   }
 
-  function antwortPruefen() {
-    if (quiz.geprueft) return;
+  /* ---------- Kartenaufgabe ---------- */
+  function karteAufbauen(box) {
+    var wrap = document.createElement("div");
+    wrap.className = "karte-wrap";
+    wrap.id = "karte-wrap";
+
+    var bild = document.createElement("img");
+    bild.src = CONFIG.karte.bild;
+    bild.alt = CONFIG.karte.bildAlt || "Karte";
+    wrap.appendChild(bild);
+
+    wrap.addEventListener("click", function (e) {
+      if (quiz.geprueft) return;
+      var r = bild.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+
+      var x = (e.clientX - r.left) / r.width;
+      var y = (e.clientY - r.top) / r.height;
+      if (x < 0 || x > 1 || y < 0 || y > 1) return;
+
+      quiz.kartenAntwort = { x: x, y: y };
+      markerSetzen(wrap, "marker-eigen", x, y, "");
+      $("btn-check").disabled = false;
+    });
+
+    box.appendChild(wrap);
+  }
+
+  function markerSetzen(wrap, klasse, x, y, beschriftung) {
+    var vorher = wrap.querySelector("." + klasse);
+    if (vorher) vorher.parentNode.removeChild(vorher);
+
+    var m = document.createElement("div");
+    m.className = "marker " + klasse;
+    m.style.left = (x * 100) + "%";
+    m.style.top = (y * 100) + "%";
+
+    if (beschriftung) {
+      var l = document.createElement("span");
+      l.className = "marker-label";
+      l.textContent = beschriftung;
+      // Label nach innen klappen, wenn der Marker am rechten Rand sitzt
+      if (x > 0.6) l.classList.add("links");
+      m.appendChild(l);
+    }
+
+    wrap.appendChild(m);
+    return m;
+  }
+
+  function kartenAntwortPruefen(f) {
+    var a = quiz.kartenAntwort;
+    if (!a) return;
     quiz.geprueft = true;
 
+    var wrap = $("karte-wrap");
+    var bild = wrap.querySelector("img");
+
+    // x und y sind auf Breite bzw. Hoehe normiert - y auf die Breite umrechnen,
+    // damit der Abstand nicht vom Seitenverhaeltnis verzerrt wird
+    var verhaeltnis = (bild.naturalWidth && bild.naturalHeight)
+      ? bild.naturalHeight / bild.naturalWidth
+      : 1;
+
+    var dx = a.x - f.tonne.x;
+    var dy = (a.y - f.tonne.y) * verhaeltnis;
+    var abstand = Math.sqrt(dx * dx + dy * dy);
+
+    var toleranz = (CONFIG.karte && typeof CONFIG.karte.toleranz === "number")
+      ? CONFIG.karte.toleranz : 0.1;
+    var richtig = abstand <= toleranz;
+
+    wrap.classList.add("locked");
+    markerSetzen(wrap, "marker-eigen", a.x, a.y, "")
+      .classList.add(richtig ? "treffer" : "daneben");
+    markerSetzen(wrap, "marker-loesung", f.tonne.x, f.tonne.y, f.tonne.name);
+
+    ergebnisAnzeigen(richtig, f.tonne.hinweis || "", f);
+  }
+
+  /* ---------- Auswertung einer Frage ---------- */
+  function ergebnisAnzeigen(richtig, text, f) {
+    var fb = $("quiz-feedback");
+    fb.innerHTML = "";
+    fb.hidden = false;
+    fb.className = "feedback " + (richtig ? "ok" : "no");
+
+    var kopf = document.createElement("strong");
+    kopf.textContent = richtig ? "Richtig!" : "Leider nicht ganz.";
+    fb.appendChild(kopf);
+    if (text) fb.appendChild(document.createTextNode(text));
+
+    if (richtig) {
+      quiz.richtigCount++;
+    } else {
+      quiz.fehler.push(f);
+    }
+
+    $("btn-check").hidden = true;
+    $("btn-next").hidden = false;
+    $("btn-next").textContent =
+      (quiz.index + 1 < quiz.fragen.length) ? "Weiter" : "Ergebnis ansehen";
+  }
+
+  function antwortPruefen() {
+    if (quiz.geprueft) return;
+
     var f = quiz.fragen[quiz.index];
+    if (f.typ === "karte") {
+      kartenAntwortPruefen(f);
+      return;
+    }
+    quiz.geprueft = true;
     var labels = $("quiz-options").querySelectorAll(".opt");
     var allesRichtig = true;
 
@@ -200,28 +356,7 @@
       if (gewaehlt !== korrekt) allesRichtig = false;
     });
 
-    var fb = $("quiz-feedback");
-    fb.innerHTML = "";
-    fb.hidden = false;
-    fb.className = "feedback " + (allesRichtig ? "ok" : "no");
-
-    var kopf = document.createElement("strong");
-    kopf.textContent = allesRichtig ? "Richtig!" : "Leider nicht ganz.";
-    fb.appendChild(kopf);
-    if (!allesRichtig && f.erklaerung) {
-      fb.appendChild(document.createTextNode(f.erklaerung));
-    }
-
-    if (allesRichtig) {
-      quiz.richtigCount++;
-    } else {
-      quiz.fehler.push(f);
-    }
-
-    $("btn-check").hidden = true;
-    $("btn-next").hidden = false;
-    $("btn-next").textContent =
-      (quiz.index + 1 < quiz.fragen.length) ? "Weiter" : "Ergebnis ansehen";
+    ergebnisAnzeigen(allesRichtig, allesRichtig ? "" : f.erklaerung, f);
   }
 
   function naechsteFrage() {

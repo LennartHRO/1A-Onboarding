@@ -206,6 +206,61 @@ p:last-child { margin-bottom: 0; }
 .feedback.no  { background: var(--bad-bg);  border-color: var(--bad); }
 .feedback strong { display: block; margin-bottom: 3px; }
 
+/* ---------- Bild in einer Regelkarte ---------- */
+.rule-bild { display: block; margin-top: 12px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+.rule-bild img { display: block; width: 100%; height: auto; }
+.rule-bild-hinweis { font-size: 13px; color: var(--text-soft); margin: 6px 0 0; text-align: center; }
+
+/* ---------- Kartenaufgabe ---------- */
+.karte-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--bg);
+}
+.karte-wrap img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+.karte-wrap.locked { cursor: default; }
+
+.marker {
+  position: absolute;
+  width: 22px; height: 22px;
+  margin: 0;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 5px rgba(0,0,0,.45);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: var(--accent);
+}
+.marker-eigen.treffer { background: #15803d; }
+.marker-eigen.daneben { background: #b91c1c; }
+.marker-loesung {
+  background: #15803d;
+  width: 26px; height: 26px;
+  animation: marker-auf .3s ease-out;
+}
+@keyframes marker-auf { from { transform: translate(-50%, -50%) scale(.3); opacity: 0; } }
+
+.marker-label {
+  position: absolute;
+  left: 30px; top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  background: #15803d;
+  color: #fff;
+  font-size: 13px; font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+  box-shadow: 0 1px 5px rgba(0,0,0,.35);
+}
+.marker-label.links { left: auto; right: 30px; }
+
 /* ---------- Fehlerliste ---------- */
 .mistakes { margin-top: 12px; }
 .mistakes div {

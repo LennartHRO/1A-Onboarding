@@ -162,6 +162,13 @@ const CONFIG = {
           icon: "📅",
           titel: "Die Montagsregel",
           text: "Am Montag sind alle Behälter erneut zu entleeren – egal, wie sehr sie gefüllt sind – und leer an den darauffolgenden Mülldienst zu übergeben."
+        },
+        {
+          icon: "📍",
+          titel: "Wo die Tonnen stehen",
+          text: "Glas sowie Plastik & Alu stehen nordöstlich der Kreuzung. Biomüll, Papiermüll und Restmüll findest du südwestlich davon. Das Wertstoffmobil kommt donnerstags morgens an die Hiltenspergerstraße. Präg dir die Standorte gut ein – im Test musst du eine davon auf der Karte zeigen.",
+          bild: "karte-loesung.png",
+          bildAlt: "Karte mit den Standorten der Mülltonnen rund um die Kreuzung Clemensstraße / Hiltenspergerstraße"
         }
       ]
     }
@@ -286,6 +293,57 @@ const CONFIG = {
       erklaerung: "Immer verfügbar sein sollten: Küchenpapier, Bio-Müllbeutel, Schwämme, Lappen, Backpapier und Zwiebeln. Lebensmittel wie Milch oder Kaffee kauft jeder selbst."
     }
   ],
+
+  /* --- Aufgabe auf der Karte --------------------------------
+     Im Test wird zufällig EINE dieser Tonnen abgefragt. Man tippt
+     die Stelle auf der leeren Karte an.
+
+     x und y sind Anteile der Bildbreite bzw. -höhe (0 bis 1),
+     gemessen aus src/Karte_Lösung.png. Oben links = 0/0.
+
+     "toleranz" ist der erlaubte Abstand, gemessen in Bildbreiten.
+     0.07 entspricht etwa 7 % der Kartenbreite – auf dem Handy rund
+     einen Daumen breit. Zur Orientierung die Abstände zwischen den
+     Tonnen (kleiner als die Toleranz = die beiden sind nicht mehr
+     unterscheidbar):
+         Glas / Plastik & Alu    0.053  (stehen ohnehin nebeneinander)
+         Papiermüll / Restmüll   0.094
+         Biomüll / Papiermüll    0.127
+     Mit 0.07 muss man also die richtige Tonne treffen, nicht nur die
+     richtige Straßenecke. Größerer Wert = großzügiger.
+     ---------------------------------------------------------- */
+  karte: {
+    bild: "karte.png",
+    bildAlt: "Leere Karte der Kreuzung Clemensstraße / Hiltenspergerstraße",
+    toleranz: 0.07,
+    tonnen: [
+      {
+        name: "Glas",
+        x: 0.651, y: 0.166,
+        hinweis: "Der Glascontainer steht nordöstlich der Kreuzung, oben rechts – direkt über Plastik & Alu."
+      },
+      {
+        name: "Plastik & Alu",
+        x: 0.651, y: 0.227,
+        hinweis: "Plastik & Alu stehen nordöstlich der Kreuzung, oben rechts – direkt unter dem Glascontainer. Aluminium kommt in dieselbe Tonne wie Plastik."
+      },
+      {
+        name: "Biomüll",
+        x: 0.022, y: 0.781,
+        hinweis: "Die braune Biotonne steht ganz im Westen, links am Bildrand – ein Stück abseits von Papier- und Restmüll."
+      },
+      {
+        name: "Papiermüll",
+        x: 0.141, y: 0.832,
+        hinweis: "Die blaue Papiertonne steht südwestlich der Kreuzung, unten links – zwischen Biomüll und Restmüll."
+      },
+      {
+        name: "Restmüll",
+        x: 0.235, y: 0.832,
+        hinweis: "Die schwarze Restmülltonne steht südwestlich der Kreuzung, unten links – direkt rechts neben der blauen Papiertonne."
+      }
+    ]
+  },
 
   /* --- Text auf der Abschluss-Seite -------------------------- */
   abschlussText: "Du kennst jetzt die Dienste und Regeln. Willkommen auf dem Flur!"

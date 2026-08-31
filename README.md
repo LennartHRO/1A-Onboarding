@@ -8,11 +8,13 @@ machen einen kurzen Test und bekommen erst danach den Link zur WhatsApp-Gruppe.
 | Datei | Wofür |
 |---|---|
 | `config.js` | **Hier änderst du alles**: Regeln, Testfragen, WhatsApp-Link |
-| `src/` | Quellen: das Original-PDF mit den Dienstregeln |
+| `src/` | Quellen: Original-PDF und die beiden Karten-Originale |
 | `index.html` | Die Seite selbst |
 | `styles.css` | Aussehen (hell/dunkel automatisch) |
 | `app.js` | Ablauf-Logik |
 | `qr.html` | QR-Code + fertigen Aushang zum Ausdrucken erzeugen |
+| `karte.png` | Leere Karte für die Aufgabe im Test |
+| `karte-loesung.png` | Karte mit den Tonnen-Standorten, wird in den Regeln gezeigt |
 
 ## Vorher testen
 
@@ -54,7 +56,31 @@ Inhalte stehen komplett in `config.js`:
 - Reihenfolge von Fragen und Antworten wird beim Anzeigen automatisch gemischt.
 - `bestehensQuote: 1` heißt: alle Fragen müssen richtig sein. `0.8` = 80 % reichen.
 
-Aktuell: **22 Regeln, 10 Fragen**, Inhalt aus `src/Küchendienst 1A.pdf`.
+Aktuell: **23 Regeln, 10 Fragen + 1 Kartenaufgabe**, Inhalt aus `src/Küchendienst 1A.pdf`.
+
+### Die Kartenaufgabe
+
+Im Test wird **zufällig genau eine** Mülltonne abgefragt: Man tippt die Stelle auf der
+leeren Karte an, danach erscheinen der eigene Tipp und die richtige Stelle nebeneinander.
+Gelernt wird das vorher im Abschnitt *Mülldienst*, wo die Karte mit allen Standorten steht.
+
+Konfiguriert wird das unter `karte` in `config.js`:
+
+- `tonnen` – Name, Position und Hinweistext je Tonne. `x` und `y` sind Anteile der
+  Bildbreite bzw. -höhe (0 bis 1), oben links ist 0/0. Die aktuellen Werte sind aus
+  `src/Karte_Lösung.png` ausgemessen.
+- `toleranz` – wie grob der Tipp stimmen muss, gemessen in Bildbreiten. Steht auf `0.07`.
+  Das ist bewusst kleiner als der Abstand zwischen Papier- und Restmülltonne (0.094),
+  damit man wirklich die richtige Tonne treffen muss und nicht nur die richtige Ecke.
+  Glas und Plastik & Alu (Abstand 0.053) bleiben untereinander austauschbar – die stehen
+  ohnehin direkt nebeneinander.
+
+Eine Tonne rausnehmen: den Eintrag aus `tonnen` löschen. Neue Position bestimmen: im Test
+irgendwo hintippen, prüfen – die richtige Stelle wird danach angezeigt.
+
+> Die Biotonne sitzt sehr nah am linken Kartenrand (`x: 0.022`). Trefferbereich ist dort
+> nur die rechte Hälfte des Kreises – reicht, ist aber knapper als bei den anderen.
+> Falls das stört: Karte mit etwas mehr Rand links neu erstellen und die x-Werte anpassen.
 
 > Zeitabhängige Stelle: Im Abschnitt *Grundsätzliches* steht bei „Selbst in die Liste
 > eintragen", dass die aktuelle Liste voll ist und die neue im Oktober aushängt.
