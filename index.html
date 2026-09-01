@@ -11,6 +11,8 @@
 </head>
 <body>
 
+<button id="btn-sprache" class="sprach-btn" type="button">EN</button>
+
 <button id="btn-musik" class="musik-btn" type="button" hidden
         aria-label="Musik an oder aus" title="Musik an oder aus">🔈</button>
 
@@ -25,13 +27,13 @@
     </div>
 
     <div class="card">
-      <p>Bevor du in die WhatsApp-Gruppe kommst, machst du einmal kurz Folgendes:</p>
+      <p id="t-intro">Bevor du in die WhatsApp-Gruppe kommst, machst du einmal kurz Folgendes:</p>
       <ol class="steps">
-        <li><span class="step-num">1</span> Stockwerksregeln lesen</li>
-        <li><span class="step-num">2</span> Kurzen Test machen</li>
-        <li><span class="step-num">3</span> Gruppen-Link bekommen 🎉</li>
+        <li><span class="step-num">1</span> <span id="t-schritt1">Stockwerksregeln lesen</span></li>
+        <li><span class="step-num">2</span> <span id="t-schritt2">Kurzen Test machen</span></li>
+        <li><span class="step-num">3</span> <span id="t-schritt3">Gruppen-Link bekommen 🎉</span></li>
       </ol>
-      <p class="muted">Dauert ungefähr 5 Minuten.</p>
+      <p class="muted" id="t-dauer">Dauert ungefähr 5 Minuten.</p>
     </div>
 
     <button class="btn btn-primary" id="btn-start">Los geht's</button>
@@ -40,8 +42,8 @@
   <!-- ============ 2. REGELN ============ -->
   <section id="screen-rules" class="screen" hidden>
     <header class="page-head">
-      <h2>Stockwerksregeln</h2>
-      <p class="muted">Lies dir alles in Ruhe durch – danach wird gefragt. Dauert etwa 3 Minuten.</p>
+      <h2 id="t-regeln-titel">Stockwerksregeln</h2>
+      <p class="muted" id="t-regeln-sub">Lies dir alles in Ruhe durch – danach wird gefragt.</p>
     </header>
 
     <div id="rules-list"></div>
@@ -81,11 +83,11 @@
   <section id="screen-fail" class="screen" hidden>
     <div class="hero">
       <div class="hero-emoji">📖</div>
-      <h1>Fast!</h1>
+      <h1 id="t-fail-titel">Fast!</h1>
       <p class="hero-sub" id="fail-score"></p>
     </div>
     <div class="card">
-      <p>Kein Problem – schau dir die Regeln nochmal an und probier es danach direkt nochmal.</p>
+      <p id="t-fail-text">Kein Problem – schau dir die Regeln nochmal an und probier es danach direkt nochmal.</p>
       <div id="fail-list" class="mistakes"></div>
     </div>
     <button class="btn btn-primary" id="btn-retry-rules">Regeln nochmal lesen</button>
@@ -96,13 +98,13 @@
   <section id="screen-done" class="screen" hidden>
     <div class="hero">
       <div class="hero-emoji">🎉</div>
-      <h1>Geschafft!</h1>
+      <h1 id="t-done-titel">Geschafft!</h1>
       <p class="hero-sub" id="done-text"></p>
     </div>
 
     <div class="card card-accent">
-      <p><strong>Dein Zugang zur Gruppe</strong></p>
-      <p class="muted">Tipp: Schreib in der Gruppe kurz Hallo mit deinem Namen und deiner Zimmernummer.</p>
+      <p><strong id="t-zugang-titel">Dein Zugang zur Gruppe</strong></p>
+      <p class="muted" id="t-zugang-tipp">Tipp: Schreib in der Gruppe kurz Hallo mit deinem Namen und deiner Zimmernummer.</p>
       <a class="btn btn-whatsapp" id="btn-whatsapp" href="#" target="_blank" rel="noopener">
         WhatsApp-Gruppe beitreten
       </a>
@@ -121,9 +123,10 @@
 
 </div>
 
-<footer class="foot">Stockwerksregeln · <span id="foot-flur">Flur 1A</span></footer>
+<footer class="foot"><span id="t-fuss">Stockwerksregeln</span> · <span id="foot-flur">Flur 1A</span></footer>
 
 <script src="config.js"></script>
+<script src="config-en.js"></script>
 <script src="musik.js"></script>
 <script src="app.js"></script>
 </body>

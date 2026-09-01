@@ -122,6 +122,26 @@ p:last-child { margin-bottom: 0; }
 .hinweis-titel { font-weight: 650; margin: 0 0 4px; }
 .hinweis-text { margin: 0; font-size: 15px; }
 
+/* ---------- Sprachschalter ---------- */
+.sprach-btn {
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top));
+  left: 12px;
+  z-index: 20;
+  min-width: 42px; height: 42px;
+  display: grid; place-items: center;
+  font-size: 14px; font-weight: 700; letter-spacing: .04em;
+  font-family: inherit;
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  padding: 0 12px;
+}
+.sprach-btn:active { transform: scale(.93); }
+
 /* ---------- Musikschalter ---------- */
 .musik-btn {
   position: fixed;

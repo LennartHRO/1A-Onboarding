@@ -5,8 +5,98 @@
   "use strict";
 
   var SPEICHER_KEY = "kuechenregeln-bestanden-v1";
+  var SPRACH_KEY = "kuechenregeln-sprache";
 
   var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- Sprachen ----------
+     config.js ist die Grundlage. Die englische Fassung enthaelt nur Texte;
+     alles Uebrige - Koordinaten, richtige Antworten, Toleranz, Link, Musik -
+     wird von dort uebernommen. So koennen die beiden nicht auseinanderlaufen. */
+  var BASIS = CONFIG_DE;
+
+  function verschmelzen(basis, uebersetzung) {
+    var neu = {};
+    Object.keys(basis).forEach(function (k) { neu[k] = basis[k]; });
+    if (!uebersetzung) return neu;
+
+    ["seitentitel", "flur", "untertitel", "abschlussText"].forEach(function (k) {
+      if (uebersetzung[k]) neu[k] = uebersetzung[k];
+    });
+    if (uebersetzung.texte) neu.texte = uebersetzung.texte;
+    if (uebersetzung.abschlussHinweis && basis.abschlussHinweis) {
+      neu.abschlussHinweis = {
+        icon: basis.abschlussHinweis.icon,
+        titel: uebersetzung.abschlussHinweis.titel,
+        text: uebersetzung.abschlussHinweis.text
+      };
+    }
+
+    neu.abschnitte = basis.abschnitte.map(function (a, i) {
+      var u = (uebersetzung.abschnitte || [])[i] || {};
+      return {
+        titel: u.titel || a.titel,
+        einleitung: u.einleitung || a.einleitung,
+        regeln: a.regeln.map(function (r, j) {
+          var ur = (u.regeln || [])[j] || {};
+          return {
+            icon: r.icon,                       // sprachneutral
+            bild: r.bild,
+            bildAlt: ur.bildAlt || r.bildAlt,
+            titel: ur.titel || r.titel,
+            text: ur.text || r.text
+          };
+        })
+      };
+    });
+
+    neu.fragen = basis.fragen.map(function (f, i) {
+      var u = (uebersetzung.fragen || [])[i] || {};
+      return {
+        richtig: f.richtig,                     // Loesung kommt immer aus config.js
+        frage: u.frage || f.frage,
+        optionen: (u.optionen && u.optionen.length === f.optionen.length) ? u.optionen : f.optionen,
+        erklaerung: u.erklaerung || f.erklaerung
+      };
+    });
+
+    if (basis.karte) {
+      var uk = uebersetzung.karte || {};
+      neu.karte = {
+        bild: basis.karte.bild,                 // Bild und Toleranz bleiben
+        toleranz: basis.karte.toleranz,
+        bildAlt: uk.bildAlt || basis.karte.bildAlt,
+        tonnen: basis.karte.tonnen.map(function (tonne, i) {
+          var ut = (uk.tonnen || [])[i] || {};
+          return { x: tonne.x, y: tonne.y, name: ut.name || tonne.name, hinweis: ut.hinweis || tonne.hinweis };
+        })
+      };
+    }
+    return neu;
+  }
+
+  var SPRACHEN = {
+    de: BASIS,
+    en: (typeof CONFIG_EN !== "undefined") ? verschmelzen(BASIS, CONFIG_EN) : BASIS
+  };
+
+  var sprache = "de";
+  try {
+    var g = localStorage.getItem(SPRACH_KEY);
+    if (g && SPRACHEN[g]) sprache = g;
+  } catch (e) {}
+  // eigene Variable: sie ueberschattet die globale Konstante aus config.js
+  var CONFIG = SPRACHEN[sprache];
+
+  function t(schluessel) {
+    return (CONFIG.texte && CONFIG.texte[schluessel]) || "";
+  }
+
+  function fuellen(werte, vorlage) {
+    return Object.keys(werte).reduce(function (txt, k) {
+      return txt.split("{" + k + "}").join(werte[k]);
+    }, vorlage);
+  }
 
   /* ---------- Screens ---------- */
   var screens = ["screen-start", "screen-rules", "screen-quiz", "screen-fail", "screen-done"];
@@ -33,23 +123,48 @@
     return wert;
   }
 
-  /* ---------- Kopfzeilen fuellen ---------- */
-  $("hero-flur").textContent = CONFIG.flur;
-  $("hero-untertitel").textContent = CONFIG.untertitel;
-  $("foot-flur").textContent = CONFIG.flur;
-  $("done-text").textContent = CONFIG.abschlussText;
+  /* ---------- Alle festen Beschriftungen setzen ---------- */
+  function texteAnwenden() {
+    document.documentElement.lang = sprache;
+    document.title = CONFIG.seitentitel + " – " + CONFIG.flur;
 
-  if (CONFIG.abschlussHinweis && CONFIG.abschlussHinweis.text) {
-    $("hinweis-icon").textContent = CONFIG.abschlussHinweis.icon || "💡";
-    $("hinweis-titel").textContent = CONFIG.abschlussHinweis.titel || "";
-    $("hinweis-text").textContent = CONFIG.abschlussHinweis.text;
-    $("abschluss-hinweis").hidden = false;
+    $("hero-flur").textContent = CONFIG.flur;
+    $("hero-untertitel").textContent = CONFIG.untertitel;
+    $("foot-flur").textContent = CONFIG.flur;
+    $("done-text").textContent = CONFIG.abschlussText;
+
+    var feste = {
+      "t-intro": "intro", "t-schritt1": "schritt1", "t-schritt2": "schritt2",
+      "t-schritt3": "schritt3", "t-dauer": "dauer", "btn-start": "start",
+      "t-regeln-titel": "regelnTitel", "t-regeln-sub": "regelnSub",
+      "rules-hint": "scrollHinweis", "btn-back-to-rules": "regelnAnsehen",
+      "btn-check": "pruefen", "t-fail-titel": "failTitel", "t-fail-text": "failText",
+      "btn-retry-rules": "nochmalLesen", "btn-retry-quiz": "nochmalTesten",
+      "t-done-titel": "doneTitel", "t-zugang-titel": "zugangTitel",
+      "t-zugang-tipp": "zugangTipp", "btn-whatsapp": "zugangButton",
+      "btn-reread": "nachlesen", "t-fuss": "fuss"
+    };
+    Object.keys(feste).forEach(function (id) {
+      var el = $(id);
+      if (el) el.textContent = t(feste[id]);
+    });
+
+    $("btn-to-quiz").textContent = nurNachlesen ? t("zurueck") : t("weiterZumTest");
+    $("btn-sprache").textContent = (sprache === "de") ? "EN" : "DE";
+    $("btn-sprache").title = (sprache === "de") ? "Switch to English" : "Auf Deutsch umschalten";
+
+    if (CONFIG.abschlussHinweis && CONFIG.abschlussHinweis.text) {
+      $("hinweis-icon").textContent = CONFIG.abschlussHinweis.icon || "💡";
+      $("hinweis-titel").textContent = CONFIG.abschlussHinweis.titel || "";
+      $("hinweis-text").textContent = CONFIG.abschlussHinweis.text;
+      $("abschluss-hinweis").hidden = false;
+    }
   }
-  document.title = CONFIG.seitentitel + " – " + CONFIG.flur;
 
   /* ---------- Regeln rendern ---------- */
-  (function renderRegeln() {
+  function renderRegeln() {
     var ziel = $("rules-list");
+    ziel.innerHTML = "";
 
     CONFIG.abschnitte.forEach(function (abschnitt) {
       var kopf = document.createElement("h3");
@@ -100,7 +215,7 @@
 
           var lupe = document.createElement("p");
           lupe.className = "rule-bild-hinweis";
-          lupe.textContent = "Zum Vergrößern antippen";
+          lupe.textContent = t("bildLupe");
           box.appendChild(lupe);
         }
 
@@ -109,7 +224,7 @@
         ziel.appendChild(karte);
       });
     });
-  })();
+  }
 
   /* ---------- Weiter-Button erst freigeben, wenn durchgescrollt ---------- */
   var regelnGelesen = false;
@@ -165,12 +280,12 @@
     // Kartenaufgabe: pro Durchlauf wird zufaellig genau eine Tonne abgefragt
     if (CONFIG.karte && CONFIG.karte.tonnen && CONFIG.karte.tonnen.length) {
       var tonnen = CONFIG.karte.tonnen;
-      var t = tonnen[Math.floor(Math.random() * tonnen.length)];
+      var tonne = tonnen[Math.floor(Math.random() * tonnen.length)];
       aufgaben.push({
         typ: "karte",
-        tonne: t,
-        frage: "Wo steht die Tonne für " + t.name + "?",
-        erklaerung: t.hinweis || ""
+        tonne: tonne,
+        frage: fuellen({ name: tonne.name }, t("karteFrage")),
+        erklaerung: tonne.hinweis || ""
       });
     }
 
@@ -185,7 +300,8 @@
     quiz.geprueft = false;
     quiz.kartenAntwort = null;
 
-    $("quiz-counter").textContent = "Frage " + (quiz.index + 1) + " von " + quiz.fragen.length;
+    $("quiz-counter").textContent =
+      fuellen({ n: quiz.index + 1, gesamt: quiz.fragen.length }, t("frageZaehler"));
     $("quiz-progress").style.width = (quiz.index / quiz.fragen.length * 100) + "%";
     $("quiz-question").textContent = f.frage;
     $("quiz-feedback").hidden = true;
@@ -198,14 +314,13 @@
 
     if (f.typ === "karte") {
       $("quiz-multi-hint").hidden = false;
-      $("quiz-multi-hint").textContent =
-        "Tippe die Stelle auf der Karte an. Der Ort muss nur ungefähr stimmen.";
+      $("quiz-multi-hint").textContent = t("karteHinweis");
       karteAufbauen(box);
       return;
     }
 
     $("quiz-multi-hint").hidden = !f.mehrfach;
-    $("quiz-multi-hint").textContent = "Mehrere Antworten sind richtig.";
+    $("quiz-multi-hint").textContent = t("mehrfachHinweis");
 
     f.optionen.forEach(function (opt, i) {
       var label = document.createElement("label");
@@ -228,10 +343,10 @@
     });
   }
 
-  function zeichen(t) {
+  function zeichen(text) {
     var s = document.createElement("span");
     s.className = "opt-mark";
-    s.textContent = t;
+    s.textContent = text;
     return s;
   }
 
@@ -323,7 +438,7 @@
     fb.className = "feedback " + (richtig ? "ok" : "no");
 
     var kopf = document.createElement("strong");
-    kopf.textContent = richtig ? "Richtig!" : "Leider nicht ganz.";
+    kopf.textContent = richtig ? t("richtig") : t("falsch");
     fb.appendChild(kopf);
     if (text) fb.appendChild(document.createTextNode(text));
 
@@ -336,7 +451,7 @@
     $("btn-check").hidden = true;
     $("btn-next").hidden = false;
     $("btn-next").textContent =
-      (quiz.index + 1 < quiz.fragen.length) ? "Weiter" : "Ergebnis ansehen";
+      (quiz.index + 1 < quiz.fragen.length) ? t("weiter") : t("ergebnis");
   }
 
   function antwortPruefen() {
@@ -393,7 +508,7 @@
     }
 
     $("fail-score").textContent =
-      quiz.richtigCount + " von " + quiz.fragen.length + " Fragen richtig.";
+      fuellen({ richtig: quiz.richtigCount, gesamt: quiz.fragen.length }, t("failScore"));
     var liste = $("fail-list");
     liste.innerHTML = "";
     quiz.fehler.forEach(function (f) {
@@ -445,7 +560,7 @@
   $("btn-reread").addEventListener("click", function () {
     nurNachlesen = true;
     regelnFreigeben();
-    $("btn-to-quiz").textContent = "Zurück";
+    $("btn-to-quiz").textContent = t("zurueck");
     zeige("screen-rules");
   });
 
@@ -486,7 +601,31 @@
     });
   }
 
+  /* ---------- Sprache umschalten ---------- */
+  function spracheSetzen(neueSprache) {
+    if (!SPRACHEN[neueSprache] || neueSprache === sprache) return;
+    sprache = neueSprache;
+    CONFIG = SPRACHEN[sprache];
+    try { localStorage.setItem(SPRACH_KEY, sprache); } catch (e) {}
+
+    texteAnwenden();
+    renderRegeln();
+    $("btn-whatsapp").href = whatsappUrl();
+
+    // Laufende Fragen beginnen in der neuen Sprache von vorn
+    if (!$("screen-quiz").hidden) {
+      quizAufbauen();
+      frageAnzeigen();
+    }
+  }
+
+  $("btn-sprache").addEventListener("click", function () {
+    spracheSetzen(sprache === "de" ? "en" : "de");
+  });
+
   /* ---------- Start ---------- */
+  texteAnwenden();
+  renderRegeln();
   $("btn-whatsapp").href = whatsappUrl();
 
   var schonBestanden = false;
@@ -494,7 +633,7 @@
 
   if (schonBestanden) {
     nurNachlesen = true;
-    $("btn-to-quiz").textContent = "Zurück";
+    $("btn-to-quiz").textContent = t("zurueck");
     regelnFreigeben();
     zeige("screen-done");
   } else {

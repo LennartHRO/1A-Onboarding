@@ -45,6 +45,50 @@ const CONFIG = {
     lautstaerke: 0.16
   },
 
+  /* --- Feste Beschriftungen der Oberfläche ------------------
+     Die englische Fassung steht in config-en.js.
+     ---------------------------------------------------------- */
+  texte: {
+    sprachName: "Deutsch",
+    intro: "Bevor du in die WhatsApp-Gruppe kommst, machst du einmal kurz Folgendes:",
+    schritt1: "Stockwerksregeln lesen",
+    schritt2: "Kurzen Test machen",
+    schritt3: "Gruppen-Link bekommen 🎉",
+    dauer: "Dauert ungefähr 5 Minuten.",
+    start: "Los geht's",
+
+    regelnTitel: "Stockwerksregeln",
+    regelnSub: "Lies dir alles in Ruhe durch – danach wird gefragt.",
+    scrollHinweis: "Scroll bis ans Ende der Regeln",
+    weiterZumTest: "Weiter zum Test",
+    zurueck: "Zurück",
+    bildLupe: "Zum Vergrößern antippen",
+
+    frageZaehler: "Frage {n} von {gesamt}",
+    regelnAnsehen: "Regeln nochmal ansehen",
+    mehrfachHinweis: "Mehrere Antworten sind richtig.",
+    karteHinweis: "Tippe die Stelle auf der Karte an. Der Ort muss nur ungefähr stimmen.",
+    karteFrage: "Wo steht die Tonne für {name}?",
+    pruefen: "Antwort prüfen",
+    weiter: "Weiter",
+    ergebnis: "Ergebnis ansehen",
+    richtig: "Richtig!",
+    falsch: "Leider nicht ganz.",
+
+    failTitel: "Fast!",
+    failText: "Kein Problem – schau dir die Regeln nochmal an und probier es danach direkt nochmal.",
+    failScore: "{richtig} von {gesamt} Fragen richtig.",
+    nochmalLesen: "Regeln nochmal lesen",
+    nochmalTesten: "Direkt nochmal testen",
+
+    doneTitel: "Geschafft!",
+    zugangTitel: "Dein Zugang zur Gruppe",
+    zugangTipp: "Tipp: Schreib in der Gruppe kurz Hallo mit deinem Namen und deiner Zimmernummer.",
+    zugangButton: "WhatsApp-Gruppe beitreten",
+    nachlesen: "Regeln nochmal nachlesen",
+    fuss: "Stockwerksregeln"
+  },
+
   /* --- Die Regeln, gegliedert in Abschnitte -----------------
      Beliebig viele Abschnitte, beliebig viele Regeln pro Abschnitt.
      "einleitung" ist optional, "bild" ebenfalls.
@@ -438,3 +482,7 @@ const CONFIG = {
     text: "Diese Regeln sind nicht in Stein gemeißelt. Wir sind immer offen für Verbesserungen und gute Ideen – zum Semesterbeginn setzen wir uns sowieso alle zusammen. Bring deine Vorschläge einfach mit."
   }
 };
+
+/* Zweiter Name fuer dieselben Daten: app.js nutzt ihn als Grundlage,
+   damit die Sprachumschaltung eine eigene Variable verwenden kann. */
+var CONFIG_DE = CONFIG;

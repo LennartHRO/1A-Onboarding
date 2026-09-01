@@ -19,6 +19,7 @@ Handvoll statischer Dateien und lässt sich auf jedem beliebigen Webspace oder k
 
 ## Merkmale
 
+- Zweisprachig, umschaltbar über eine Schaltfläche; die Auswahl wird gemerkt
 - Sämtliche Inhalte liegen in `config.js` und lassen sich ohne Eingriff in den Code pflegen
 - Fragen und Antwortoptionen werden bei jedem Durchlauf neu gemischt
 - Kartenaufgabe: Eine Position wird auf einer Karte angetippt und gegen eine konfigurierbare
@@ -34,7 +35,8 @@ Handvoll statischer Dateien und lässt sich auf jedem beliebigen Webspace oder k
 | Datei | Inhalt |
 |---|---|
 | `index.html` | Seitengerüst aller Ansichten |
-| `config.js` | **Alle Inhalte und Einstellungen** |
+| `config.js` | **Alle Inhalte und Einstellungen** (deutsche Fassung) |
+| `config-en.js` | Englische Übersetzung – ausschließlich Texte |
 | `app.js` | Ablaufsteuerung, Auswertung, Kartenaufgabe |
 | `musik.js` | Hintergrundmusik (Web Audio) |
 | `styles.css` | Gestaltung, hell und dunkel |
@@ -61,6 +63,22 @@ Alles Folgende steht in `config.js`, jeweils mit erläuterndem Kommentar:
 
 Der Zugangslink wird sowohl im Klartext (`https://…`) als auch Base64-kodiert akzeptiert.
 Kodieren lässt er sich in der Browser-Konsole mit `btoa("https://…")`.
+
+## Mehrsprachigkeit
+
+`config.js` ist die maßgebliche Fassung, `config-en.js` enthält ausschließlich die
+Übersetzung der Texte. Alles Technische – Bildkoordinaten, welche Antwort richtig ist,
+Toleranz, Zugangslink, Musik – wird aus `config.js` übernommen und darf in der
+Übersetzung nicht wiederholt werden. Beide Fassungen können dadurch inhaltlich nicht
+auseinanderlaufen.
+
+Maßgeblich ist die **Reihenfolge**: Der erste Abschnitt in `config-en.js` übersetzt den
+ersten Abschnitt in `config.js`, die erste Frage die erste Frage, die erste Antwortoption
+die erste Antwortoption. Kommt eine Regel oder Frage hinzu, gehört sie in beiden Dateien
+an dieselbe Stelle. Fehlt eine Übersetzung, greift automatisch der deutsche Text.
+
+Eine weitere Sprache ergänzt man analog: Datei nach dem Vorbild von `config-en.js`
+anlegen, in `index.html` einbinden und in `app.js` bei `SPRACHEN` eintragen.
 
 ## Lokal ausprobieren
 
