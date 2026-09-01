@@ -1,159 +1,90 @@
-# Küchenregeln-Onboarding – Flur 1A
+# Onboarding
 
-Kleine Webseite: neue Mitbewohner scannen den QR-Code, lesen die Küchenregeln,
-machen einen kurzen Test und bekommen erst danach den Link zur WhatsApp-Gruppe.
+Statische Web-App für ein Onboarding: Neue Mitglieder lesen ein Regelwerk, beantworten
+anschließend eine kurze Wissensabfrage und erhalten erst danach den Zugangslink.
 
-## Dateien
+Kein Backend, kein Build-Schritt, keine Abhängigkeiten. Die Anwendung besteht aus einer
+Handvoll statischer Dateien und lässt sich auf jedem beliebigen Webspace oder kostenlos
+über GitHub Pages ausliefern.
 
-| Datei | Wofür |
+## Ablauf
+
+1. **Startseite** mit einer Übersicht der drei Schritte
+2. **Inhalte** – nach Themen gegliedert; der Weiter-Button gibt erst frei, wenn die Liste
+   vollständig durchgescrollt wurde
+3. **Wissensabfrage** – Einfach- und Mehrfachauswahl sowie eine interaktive Kartenaufgabe.
+   Eine Antwort muss geprüft werden, bevor es weitergeht; bei Fehlern erscheint eine
+   Erläuterung. Beliebig viele Wiederholungen sind möglich.
+4. **Freigabe** des Zugangslinks ab einer konfigurierbaren Bestehensquote
+
+## Merkmale
+
+- Sämtliche Inhalte liegen in `config.js` und lassen sich ohne Eingriff in den Code pflegen
+- Fragen und Antwortoptionen werden bei jedem Durchlauf neu gemischt
+- Kartenaufgabe: Eine Position wird auf einer Karte angetippt und gegen eine konfigurierbare
+  Toleranz ausgewertet; abgefragt wird pro Durchlauf ein zufällig gewähltes Ziel
+- Bestandene Abfragen werden lokal gespeichert (`localStorage`)
+- Optionale Hintergrundmusik, zur Laufzeit per Web Audio erzeugt – zwei Stücke, abschaltbar,
+  die Einstellung wird gemerkt
+- Für Mobilgeräte ausgelegt, automatische Hell-/Dunkeldarstellung
+- Druckfertige A4-Vorlage mit QR-Code liegt bei
+
+## Projektstruktur
+
+| Datei | Inhalt |
 |---|---|
-| `config.js` | **Hier änderst du alles**: Regeln, Testfragen, WhatsApp-Link |
-| `src/` | Quellen: Original-PDF und die beiden Karten-Originale |
-| `index.html` | Die Seite selbst |
-| `styles.css` | Aussehen (hell/dunkel automatisch) |
-| `app.js` | Ablauf-Logik |
-| `musik.js` | 8-Bit-Hintergrundmusik (wird im Browser erzeugt) |
-| `qr.html` | QR-Code + Aushang neu erzeugen, falls sich die Adresse ändert |
-| `aushang.pdf` | **Fertiger A4-Aushang zum Ausdrucken** (QR-Code + Anleitung) |
-| `qr-code.png` | Der QR-Code einzeln, 1400 x 1400 px |
-| `karte.png` | Leere Karte für die Aufgabe im Test |
-| `karte-loesung.png` | Karte mit den Tonnen-Standorten, wird in den Regeln gezeigt |
+| `index.html` | Seitengerüst aller Ansichten |
+| `config.js` | **Alle Inhalte und Einstellungen** |
+| `app.js` | Ablaufsteuerung, Auswertung, Kartenaufgabe |
+| `musik.js` | Hintergrundmusik (Web Audio) |
+| `styles.css` | Gestaltung, hell und dunkel |
+| `qr.html` | Werkzeug: QR-Code und Aushang neu erzeugen |
+| `aushang.pdf` | Druckfertige A4-Vorlage mit QR-Code |
+| `qr-code.png` | QR-Code einzeln, 1400 × 1400 px |
+| `karte.png`, `karte-loesung.png` | Bildmaterial der Kartenaufgabe |
+| `src/` | Quelldokumente der Inhalte |
 
-## Vorher testen
+## Konfiguration
 
-`index.html` doppelklicken – die Seite läuft komplett im Browser, ohne Server.
-Zum Zurücksetzen (wenn du den Test schon bestanden hast): Seite im privaten Fenster öffnen.
+Alles Folgende steht in `config.js`, jeweils mit erläuterndem Kommentar:
 
----
+| Schlüssel | Bedeutung |
+|---|---|
+| `seitentitel`, `flur`, `untertitel` | Beschriftung der Kopfzeile |
+| `zugangsLink` | Ziel, das nach bestandener Abfrage freigegeben wird |
+| `bestehensQuote` | Anteil richtiger Antworten zum Bestehen (`1` = alle, `0.8` = 80 %) |
+| `musik` | Ein/Aus, Lautstärke, optional eigene Audiodateien |
+| `abschnitte` | Die Inhalte, gegliedert in Kapitel mit Einträgen aus Symbol, Titel, Text und optionalem Bild |
+| `fragen` | Die Wissensabfrage. `richtig` zählt die Optionen ab 0; mehrere Werte ergeben eine Mehrfachauswahl |
+| `karte` | Bild, Trefferpunkte und Toleranz der Kartenaufgabe |
+| `abschlussHinweis` | Optionaler Kasten auf der Abschlussseite |
 
-## Schritt 1: WhatsApp-Link — erledigt
+Der Zugangslink wird sowohl im Klartext (`https://…`) als auch Base64-kodiert akzeptiert.
+Kodieren lässt er sich in der Browser-Konsole mit `btoa("https://…")`.
 
-Der Gruppenlink ist eingetragen, und zwar Base64-kodiert, damit er nicht im Klartext
-im öffentlichen Repo steht. Neuen Link setzen: Browser `F12` → *Konsole* → eintippen
+## Lokal ausprobieren
 
-```js
-btoa("https://chat.whatsapp.com/DEIN-NEUER-CODE")
-```
+`index.html` im Browser öffnen – es wird keine Toolchain und kein lokaler Server benötigt.
+Um einen bereits bestandenen Durchlauf zurückzusetzen, genügt ein privates Fenster.
 
-und das Ergebnis in `config.js` bei `whatsappLink` einsetzen. Klartext funktioniert auch.
+## Veröffentlichen
 
-> Das ist eine Hürde, kein echter Schutz – wer sich auskennt, kommt an den Link.
-> Falls doch mal jemand Unbefugtes reinkommt: In WhatsApp kannst du den Einladungslink
-> jederzeit zurücksetzen und hier den neuen eintragen.
+Die Anwendung ist rein statisch und benötigt keinen Build-Schritt.
 
-## Schritt 2: Regeln und Fragen pflegen
+- **GitHub Pages** – *Settings → Pages → Deploy from a branch → `main` / `(root)`*.
+  Jeder Push aktualisiert die Seite anschließend automatisch.
+- **Netlify oder Cloudflare Pages** – Repository verbinden, Build-Befehl leer lassen,
+  Publish-Verzeichnis `.`
 
-Inhalte stehen komplett in `config.js`:
+## QR-Code und Aushang
 
-- **`abschnitte`** – die Regeln, gegliedert nach *Grundsätzliches*, *Küchendienst*,
-  *Wohnzimmerdienst* und *Mülldienst*. Jeder Abschnitt hat einen `titel`, optional eine
-  `einleitung` und beliebig viele `regeln` aus `icon`, `titel` und `text`.
-- **`fragen`** – der Test. `richtig: [0]` zählt die Antwortmöglichkeiten ab **0**,
-  `[0]` ist also die erste Option. Mehrere Zahlen (`[0, 1]`) ergeben automatisch eine
-  Mehrfachauswahl. `erklaerung` erscheint nur, wenn falsch geantwortet wurde.
-- Reihenfolge von Fragen und Antworten wird beim Anzeigen automatisch gemischt.
-- `bestehensQuote: 1` heißt: alle Fragen müssen richtig sein. `0.8` = 80 % reichen.
+`aushang.pdf` und `qr-code.png` sind fertig erzeugt. Ändert sich die Adresse, lassen sich
+beide über `qr.html` neu erstellen: Adresse eintragen, Vorschau prüfen, als PDF speichern
+oder den Code einzeln als SVG sichern.
 
-Aktuell: **30 Regeln, 7 Fragen + 1 Kartenaufgabe**, Bestehensgrenze **80 %**
-(bei 8 Aufgaben heißt das: ein Fehler ist erlaubt, zwei nicht), Inhalt aus `src/Küchendienst 1A.pdf`.
+## Hinweis zum Zugangslink
 
-### Die Kartenaufgabe
-
-Im Test wird **zufällig genau eine** Mülltonne abgefragt: Man tippt die Stelle auf der
-leeren Karte an, danach erscheinen der eigene Tipp und die richtige Stelle nebeneinander.
-Gelernt wird das vorher im Abschnitt *Mülldienst*, wo die Karte mit allen Standorten steht.
-
-Konfiguriert wird das unter `karte` in `config.js`:
-
-- `tonnen` – Name, Position und Hinweistext je Tonne. `x` und `y` sind Anteile der
-  Bildbreite bzw. -höhe (0 bis 1), oben links ist 0/0. Die aktuellen Werte sind aus
-  `src/Karte_Lösung.png` ausgemessen.
-- `toleranz` – wie grob der Tipp stimmen muss, gemessen in Bildbreiten. Steht auf `0.07`.
-  Das ist bewusst kleiner als der Abstand zwischen Papier- und Restmülltonne (0.094),
-  damit man wirklich die richtige Tonne treffen muss und nicht nur die richtige Ecke.
-  Glas und Plastik & Alu (Abstand 0.053) bleiben untereinander austauschbar – die stehen
-  ohnehin direkt nebeneinander.
-
-Eine Tonne rausnehmen: den Eintrag aus `tonnen` löschen. Neue Position bestimmen: im Test
-irgendwo hintippen, prüfen – die richtige Stelle wird danach angezeigt.
-
-> Die Biotonne sitzt sehr nah am linken Kartenrand (`x: 0.022`). Trefferbereich ist dort
-> nur die rechte Hälfte des Kreises – reicht, ist aber knapper als bei den anderen.
-> Falls das stört: Karte mit etwas mehr Rand links neu erstellen und die x-Werte anpassen.
-
-> Zeitabhängige Stelle: Im Abschnitt *Grundsätzliches* steht bei „Selbst in die Liste
-> eintragen", dass die aktuelle Liste voll ist und die neue im Oktober aushängt.
-> Das gehört angepasst, sobald die neue Liste hängt.
-
-## Schritt 3: Ins Netz stellen (kostenlos)
-
-> Diese `README.md` wird beim Hochladen mitgenommen und wäre unter
-> `deine-adresse/README.md` lesbar. Unkritisch – wenn es dich stört, lösche sie
-> vor dem Hochladen oder verschiebe sie aus dem Ordner.
-
-### Variante A – Netlify Drop (am schnellsten, ~2 Minuten)
-
-1. [app.netlify.com/drop](https://app.netlify.com/drop) öffnen
-2. Den kompletten Ordner `1A Test` ins Browserfenster ziehen
-3. Fertig – du bekommst sofort eine Adresse wie `https://zufallsname-123.netlify.app`
-4. Kostenlos anmelden (GitHub- oder E-Mail-Login), damit die Seite dauerhaft bleibt
-5. Unter *Site configuration → Change site name* eine schönere Adresse setzen,
-   z. B. `kuechenregeln-1a.netlify.app`
-
-Kosten: 0 €. Das Gratis-Kontingent (100 GB Traffic im Monat) reicht für ein Wohnheim
-etwa millionenfach. Änderungen später: Ordner erneut auf *Deploys* ziehen.
-
-### Variante B – GitHub Pages (praktischer, wenn du öfter Regeln änderst)
-
-1. Auf [github.com](https://github.com) anmelden, neues **öffentliches** Repository anlegen
-2. Die Dateien hochladen (*Add file → Upload files*)
-3. *Settings → Pages → Source: Deploy from a branch → main / (root)* → Save
-4. Nach ~1 Minute läuft die Seite unter `https://DEINNAME.github.io/REPONAME/`
-
-Änderungen gehen später direkt im Browser: Datei anklicken → Stift-Symbol → speichern.
-Achtung: Das Repository ist öffentlich, der Quelltext also für alle einsehbar
-(siehe Hinweis zum WhatsApp-Link oben).
-
-### Variante C – Cloudflare Pages
-
-[pages.cloudflare.com](https://pages.cloudflare.com) → *Create → Upload assets* → Ordner hochladen.
-Ebenfalls kostenlos und ohne Traffic-Limit.
-
-**Empfehlung:** Variante A zum Starten. Wenn ihr die Regeln oft anpasst, Variante B.
-
-## Schritt 4: QR-Code und Aushang
-
-Beides liegt fertig im Ordner und zeigt auf `https://lennarthro.github.io/1A-Onboarding/`:
-
-- **`aushang.pdf`** – A4, randlos gesetzt, einfach ausdrucken und an die Küchentür hängen.
-  Enthält den QR-Code, die drei Schritte und die Adresse zum Abtippen.
-- **`qr-code.png`** – nur der Code, 1400 x 1400 Pixel. Für Aushänge, die du selbst gestaltest,
-  oder zum Verschicken.
-
-Der Code wurde nach dem Erzeugen maschinell zurückgelesen und enthält exakt die Live-Adresse.
-
-**Wenn sich die Adresse mal ändert** (anderer Hoster, eigene Domain): `qr.html` doppelklicken,
-neue Adresse eintragen, dann *Aushang drucken / als PDF speichern* oder den Code als SVG sichern.
-Danach `aushang.pdf` und `qr-code.png` im Ordner ersetzen.
-
-Vor dem Aufhängen einmal selbst mit dem Handy scannen und den Ablauf durchklicken.
-
----
-
-## Wichtig zu wissen
-
-- **Alles läuft im Browser des Besuchers**, es gibt keinen Server und keine Datenbank.
-  Du siehst also nicht, wer den Test gemacht hat. Wenn du das brauchst, sag Bescheid –
-  das ginge z. B. über ein kostenloses Google-Formular als Zwischenschritt.
-- **Bestanden wird lokal gespeichert.** Wer den Test einmal geschafft hat, landet beim
-  nächsten Öffnen direkt auf der Seite mit dem Gruppenlink.
-- **Der „Weiter zum Test"-Button** wird erst aktiv, wenn man bis ans Ende der Regeln
-  gescrollt hat (spätestens nach 45 Sekunden).
-- **Überspringen geht nicht:** Nach dem Auswählen muss erst geprüft werden, den
-  Weiter-Button gibt es vorher gar nicht.
-- **Musik:** Die 8-Bit-Melodie ist selbst erzeugt (Web Audio), keine Audiodatei und kein
-  fremder Soundtrack. Sie startet erst beim Klick auf „Los geht's" – vorher lassen Browser
-  ohnehin keinen Ton zu – und lässt sich oben rechts abschalten; das wird gemerkt.
-  Eigene Musik: Datei in den Ordner legen und in `config.js` unter `musik.datei`
-  eintragen (dann bitte auf die Rechte an der Datei achten). `musik.an: false` schaltet
-  alles ab.
+Die Base64-Kodierung erschwert das Auffinden im Quelltext, ist aber **kein Zugriffsschutz**.
+Eine rein statische Seite kann Inhalte technisch nicht zurückhalten – wer den Link ohne
+Abfrage möchte, kommt an ihn heran. Für echten Schutz wäre eine serverseitige Prüfung nötig.
+Für den vorgesehenen Zweck ist die Hürde bewusst als solche gewählt.

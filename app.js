@@ -22,9 +22,9 @@
     return $("screen-quiz").hidden ? "normal" : "episch";
   }
 
-  /* ---------- WhatsApp-Link auslesen (Klartext oder Base64) ---------- */
+  /* ---------- Zugangslink auslesen (Klartext oder Base64) ---------- */
   function whatsappUrl() {
-    var wert = (CONFIG.whatsappLink || "").trim();
+    var wert = (CONFIG.zugangsLink || CONFIG.whatsappLink || "").trim();
     if (/^https?:\/\//i.test(wert)) return wert;
     try {
       var dekodiert = atob(wert);

@@ -10,15 +10,16 @@ const CONFIG = {
   flur: "Flur 1A",
   untertitel: "Willkommen auf dem Stockwerk!",
 
-  /* --- WhatsApp-Gruppenlink --------------------------------
+  /* --- Zugangslink -----------------------------------------
+     Ziel, das nach bestandener Abfrage freigegeben wird.
      Steht hier Base64-kodiert, damit er nicht im Klartext im
-     Quelltext der Seite (und im öffentlichen Repo) auftaucht.
+     Quelltext der Seite auftaucht.
      Neuen Link kodieren: Browser -> F12 -> Konsole -> eintippen:
-         btoa("https://chat.whatsapp.com/DEIN-CODE")
+         btoa("https://beispiel.de/dein-link")
      Ergebnis ohne Anführungszeichen hier einsetzen.
      Ein Link im Klartext (https://...) funktioniert auch.
      ---------------------------------------------------------- */
-  whatsappLink: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9IMFZWclJpTUh3M0NOclVTVFJkUHJC",
+  zugangsLink: "aHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9IMFZWclJpTUh3M0NOclVTVFJkUHJC",
 
   /* --- Bestehensgrenze --------------------------------------
      1   = alle Fragen müssen richtig sein
@@ -92,13 +93,13 @@ const CONFIG = {
       regeln: [
         {
           icon: "🧼",
-          titel: "Immer direkt spülen",
-          text: "Dein Geschirr spülst du sofort nach dem Kochen und Essen ab. Nichts zum Trocknen stehen lassen – auch nicht kurz und auch nicht bis später."
+          titel: "Direkt spülen und Flächen sauber hinterlassen",
+          text: "Dein Geschirr spülst du sofort nach dem Kochen und Essen ab. Nichts zum Trocknen stehen lassen – auch nicht kurz und auch nicht bis später. Und damit ist es nicht getan: Bevor du die Küche verlässt, sind auch alle Flächen wieder sauber, die du benutzt hast."
         },
         {
           icon: "🧴",
-          titel: "Flächen und Tische abwischen",
-          text: "Tische und Arbeitsflächen wischst du nach der Benutzung ab. Jedes Mal, nicht nur dann, wenn etwas danebengegangen ist."
+          titel: "Was alles dazugehört",
+          text: "Esstisch, Arbeitsflächen und Herd wischst du nach der Benutzung ab – jedes Mal, nicht nur dann, wenn etwas danebengegangen ist."
         },
         {
           icon: "🚰",
@@ -291,15 +292,15 @@ const CONFIG = {
       erklaerung: "Zu Beginn jeder Periode trägt sich jeder selbst in die Liste ein, die in der Küche hängt. Wann die neue Liste aushängt, kündigen wir nochmal in der Gruppe an."
     },
     {
-      frage: "Du hast gekocht und gegessen. Wann spülst du dein Geschirr?",
+      frage: "Du hast gekocht und gegessen. Was machst du, bevor du die Küche verlässt?",
       optionen: [
-        "Sofort – und zwar komplett, nichts bleibt zum Trocknen stehen",
-        "Ich stelle es zum Trocknen und räume es später weg",
-        "Spätestens am nächsten Morgen",
-        "Wenn kein sauberes Geschirr mehr da ist"
+        "Sofort spülen und alle benutzten Flächen sauber hinterlassen",
+        "Sofort spülen – um die Flächen kümmert sich der Küchendienst",
+        "Das Geschirr zum Trocknen stellen und später wegräumen",
+        "Alles stehen lassen, ich koche später sowieso nochmal"
       ],
       richtig: [0],
-      erklaerung: "Immer direkt spülen und nichts zum Trocknen stehen lassen. Dazu gehört auch: Flächen abwischen und die Spüle ohne Reste im Abfluss hinterlassen."
+      erklaerung: "Beides gehört zusammen: Geschirr sofort spülen, nichts zum Trocknen stehen lassen – und Esstisch, Arbeitsflächen und Herd sauber hinterlassen. Die Spüle bleibt ohne Reste im Abfluss."
     },
     {
       frage: "Du hast Küchendienst und siehst das dreckige Geschirr eines Mitbewohners. Was ist deine Aufgabe?",
